@@ -126,7 +126,7 @@ class AIService:
 
     def _build_vision_prompt(self, dom_snapshot: Dict) -> str:
 
-        return f
+        return f"Perform an accessibility audit on the provided screenshot. Focus on visual clarity, spacing, and potential ARIA misalignments. DOM Statistics: {json.dumps(dom_snapshot.get('statistics', {}))}"
 
     def _build_fix_context(
         self,
@@ -141,7 +141,7 @@ class AIService:
 
             surrounding_html = f"Element: {issue.location.html or 'unknown'}"
 
-        return f
+        return f"Generate an accessible fix for the following issue:\nTitle: {issue.title}\nDescription: {issue.description}\n{surrounding_html}\n\nProvide the fix in JSON format with 'code_before', 'code_after', and 'explanation' fields."
 
     async def _call_local_llava(
         self,
