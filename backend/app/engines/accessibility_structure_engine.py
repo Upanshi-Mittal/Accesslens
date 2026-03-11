@@ -1,4 +1,4 @@
-from backend.utils.tree_traversal import traverse
+from ..utils.tree_traversal import traverse
 
 
 class A11yStructureEngine:
