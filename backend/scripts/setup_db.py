@@ -189,7 +189,13 @@ class DatabaseSetup:
             )
 
 
-            await conn.execute(f)
+            # Terminate other connections to the database to allow dropping it
+            await conn.execute(f"""
+                SELECT pg_terminate_backend(pid)
+                FROM pg_stat_activity
+                WHERE datname = '{self.database}'
+                  AND pid <> pg_backend_pid()
+            """)
 
 
             await conn.execute(f"DROP DATABASE IF EXISTS {self.database}")

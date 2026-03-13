@@ -110,7 +110,14 @@ async def run_audit_background(
 
         audit_store[audit_id] = AuditReport(
             request=request,
-            summary={},
+            summary=AuditSummary(
+                total_issues=0,
+                by_severity={},
+                by_source={},
+                by_wcag_level={},
+                score=0,
+                confidence_avg=0
+            ),
             issues=[],
             metadata={"error": str(e)}
         )
