@@ -8,12 +8,7 @@ from playwright.async_api import async_playwright, Browser, Page
 from app.core.config import settings
 from app.core.browser_manager import browser_manager
 
-@pytest.fixture(scope="session")
-def event_loop():
-
-    loop = asyncio.get_event_loop_policy().new_event_loop()
-    yield loop
-    loop.close()
+# Removed deprecated session-scoped event_loop fixture
 
 @pytest.fixture(scope="session")
 async def browser():
