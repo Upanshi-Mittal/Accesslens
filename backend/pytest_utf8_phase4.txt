@@ -1,0 +1,604 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.13.5, pytest-9.0.2, pluggy-1.6.0
+rootdir: C:\Users\Dell\Downloads\Accesslens\backend
+configfile: pytest.ini
+plugins: anyio-4.12.1, asyncio-1.3.0, cov-7.0.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=function, asyncio_default_test_loop_scope=function
+collected 40 items / 1 skipped
+
+tests/test_accessibility_structure.py::test_heading_structure 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:58:44 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:58:46 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:58:46 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:58:46 [    INFO] Registered 3 engines (main.py:45)
+PASSED                                                                   [  2%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:58:52 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:58:52 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:58:52 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_api.py::test_health_check 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:58:52 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:58:54 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:58:54 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:58:54 [    INFO] Registered 3 engines (main.py:45)
+-------------------------------- live log call --------------------------------
+2026-03-11 22:58:54 [    INFO] HTTP Request: GET http://test/health "HTTP/1.1 200 OK" (_client.py:1740)
+PASSED                                                                   [  5%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:58:54 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:58:54 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:58:54 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_api.py::test_root_endpoint 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:58:54 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:58:55 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:58:55 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:58:55 [    INFO] Registered 3 engines (main.py:45)
+-------------------------------- live log call --------------------------------
+2026-03-11 22:58:55 [    INFO] HTTP Request: GET http://test/ "HTTP/1.1 200 OK" (_client.py:1740)
+PASSED                                                                   [  7%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:58:55 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:58:55 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:58:55 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_api.py::test_list_engines 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:58:55 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:58:56 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:58:56 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:58:56 [    INFO] Registered 3 engines (main.py:45)
+-------------------------------- live log call --------------------------------
+2026-03-11 22:58:56 [    INFO] HTTP Request: GET http://test/api/v1/engines "HTTP/1.1 200 OK" (_client.py:1740)
+PASSED                                                                   [ 10%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:58:56 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:58:57 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:58:57 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_api.py::test_start_audit 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:58:57 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:58:58 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:58:58 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:58:58 [    INFO] Registered 3 engines (main.py:45)
+-------------------------------- live log call --------------------------------
+2026-03-11 22:58:58 [    INFO] Starting audit bb8f592e-55d4-4af2-99a7-70cc87118479 for URL: https://example.com (routes.py:72)
+2026-03-11 22:58:58 [    INFO] Running audit bb8f592e-55d4-4af2-99a7-70cc87118479 in background (routes.py:140)
+2026-03-11 22:58:58 [    INFO] Starting audit for https://example.com (audit_orchestrator.py:31)
+2026-03-11 22:59:01 [ WARNING] DOM snapshot failed: CDPSession.send: Protocol error (DOMSnapshot.captureSnapshot): invalid CSS property (accessibility_tree.py:191)
+2026-03-11 22:59:02 [ WARNING] Metrics collection failed: 'Page' object has no attribute 'metrics' (page_controller.py:176)
+2026-03-11 22:59:02 [    INFO] Audit complete: 0 issues found (audit_orchestrator.py:81)
+2026-03-11 22:59:02 [    INFO] Audit bb8f592e-55d4-4af2-99a7-70cc87118479 completed with 0 issues (routes.py:148)
+2026-03-11 22:59:02 [    INFO] HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 200 OK" (_client.py:1740)
+PASSED                                                                   [ 12%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:02 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:02 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:02 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_api.py::test_get_audit_status 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:59:02 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:59:03 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:59:03 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:59:03 [    INFO] Registered 3 engines (main.py:45)
+-------------------------------- live log call --------------------------------
+2026-03-11 22:59:03 [    INFO] Starting audit 4d079549-ea2c-4f00-b243-230c6b27f5ab for URL: https://example.com (routes.py:72)
+2026-03-11 22:59:03 [    INFO] Running audit 4d079549-ea2c-4f00-b243-230c6b27f5ab in background (routes.py:140)
+2026-03-11 22:59:03 [    INFO] Starting audit for https://example.com (audit_orchestrator.py:31)
+2026-03-11 22:59:06 [ WARNING] DOM snapshot failed: CDPSession.send: Protocol error (DOMSnapshot.captureSnapshot): invalid CSS property (accessibility_tree.py:191)
+2026-03-11 22:59:06 [ WARNING] Metrics collection failed: 'Page' object has no attribute 'metrics' (page_controller.py:176)
+2026-03-11 22:59:06 [ WARNING] Engine wcag not found (audit_orchestrator.py:48)
+2026-03-11 22:59:06 [ WARNING] Engine structural not found (audit_orchestrator.py:48)
+2026-03-11 22:59:06 [ WARNING] Engine contrast not found (audit_orchestrator.py:48)
+2026-03-11 22:59:06 [    INFO] Audit complete: 0 issues found (audit_orchestrator.py:81)
+2026-03-11 22:59:06 [    INFO] Audit 4d079549-ea2c-4f00-b243-230c6b27f5ab completed with 0 issues (routes.py:148)
+2026-03-11 22:59:06 [    INFO] HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 200 OK" (_client.py:1740)
+2026-03-11 22:59:06 [    INFO] HTTP Request: GET http://test/api/v1/audit/4d079549-ea2c-4f00-b243-230c6b27f5ab/status "HTTP/1.1 200 OK" (_client.py:1740)
+PASSED                                                                   [ 15%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:06 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:07 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:07 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_api.py::test_get_nonexistent_audit 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:59:07 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:59:08 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:59:08 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:59:08 [    INFO] Registered 3 engines (main.py:45)
+-------------------------------- live log call --------------------------------
+2026-03-11 22:59:08 [    INFO] HTTP Request: GET http://test/api/v1/audit/8f5b5c33-712e-4d3e-95cf-43bd2ec71c86 "HTTP/1.1 404 Not Found" (_client.py:1740)
+PASSED                                                                   [ 17%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:08 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:08 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:08 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_api.py::test_cancel_audit 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:59:08 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:59:10 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:59:10 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:59:10 [    INFO] Registered 3 engines (main.py:45)
+-------------------------------- live log call --------------------------------
+2026-03-11 22:59:10 [    INFO] HTTP Request: POST http://test/api/v1/audit/fbca6ca7-f109-4046-b85a-d54e73cc8924/cancel "HTTP/1.1 200 OK" (_client.py:1740)
+PASSED                                                                   [ 20%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:10 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:10 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:10 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_api.py::test_invalid_url_validation 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:59:10 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:59:12 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:59:12 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:59:12 [    INFO] Registered 3 engines (main.py:45)
+-------------------------------- live log call --------------------------------
+2026-03-11 22:59:12 [    INFO] HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 422 Unprocessable Entity" (_client.py:1740)
+FAILED                                                                   [ 22%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:12 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:12 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:12 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_browser_manager.py::test_browser_manager_singleton 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:59:12 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:59:13 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:59:13 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:59:13 [    INFO] Registered 3 engines (main.py:45)
+PASSED                                                                   [ 25%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:13 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:14 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:14 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_browser_manager.py::test_browser_manager_max_concurrent_pages 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:59:14 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:59:15 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:59:15 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:59:15 [    INFO] Registered 3 engines (main.py:45)
+-------------------------------- live log call --------------------------------
+2026-03-11 22:59:15 [ WARNING] Max concurrent pages reached, waiting... (browser_manager.py:76)
+PASSED                                                                   [ 27%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:17 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:17 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:17 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_browser_manager.py::test_browser_context_manager 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:59:17 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:59:18 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:59:18 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:59:18 [    INFO] Registered 3 engines (main.py:45)
+-------------------------------- live log call --------------------------------
+2026-03-11 22:59:19 [    INFO] Browser closed (browser_manager.py:117)
+PASSED                                                                   [ 30%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:19 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:19 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:19 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_color_utils_edge.py::test_color_parser_edge_cases 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:59:19 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:59:20 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:59:20 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:59:20 [    INFO] Registered 3 engines (main.py:45)
+FAILED                                                                   [ 32%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:20 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:20 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:20 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_color_utils_edge.py::test_luminance_and_contrast_boundaries 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:59:20 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:59:22 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:59:22 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:59:22 [    INFO] Registered 3 engines (main.py:45)
+PASSED                                                                   [ 35%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:22 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:22 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:22 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_concurrency.py::test_audit_store_concurrency 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:59:22 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:59:23 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:59:23 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:59:23 [    INFO] Registered 3 engines (main.py:45)
+-------------------------------- live log call --------------------------------
+2026-03-11 22:59:23 [    INFO] Starting audit 7f879a56-2d66-448e-81fc-2109c0556d9b for URL: https://example.com/page0 (routes.py:72)
+2026-03-11 22:59:23 [    INFO] Starting audit 5cdc7f55-cdec-4ed9-b223-d3951972efd6 for URL: https://example.com/page1 (routes.py:72)
+2026-03-11 22:59:23 [ WARNING] ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit (extension.py:510)
+2026-03-11 22:59:23 [ WARNING] ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit (extension.py:510)
+2026-03-11 22:59:23 [ WARNING] ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit (extension.py:510)
+2026-03-11 22:59:23 [ WARNING] ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit (extension.py:510)
+2026-03-11 22:59:23 [ WARNING] ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit (extension.py:510)
+2026-03-11 22:59:23 [ WARNING] ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit (extension.py:510)
+2026-03-11 22:59:23 [ WARNING] ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit (extension.py:510)
+2026-03-11 22:59:23 [ WARNING] ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit (extension.py:510)
+2026-03-11 22:59:23 [    INFO] Running audit 7f879a56-2d66-448e-81fc-2109c0556d9b in background (routes.py:140)
+2026-03-11 22:59:23 [    INFO] Starting audit for https://example.com/page0 (audit_orchestrator.py:31)
+2026-03-11 22:59:23 [    INFO] Running audit 5cdc7f55-cdec-4ed9-b223-d3951972efd6 in background (routes.py:140)
+2026-03-11 22:59:23 [    INFO] Starting audit for https://example.com/page1 (audit_orchestrator.py:31)
+2026-03-11 22:59:23 [    INFO] HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 429 Too Many Requests" (_client.py:1740)
+2026-03-11 22:59:23 [    INFO] HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 429 Too Many Requests" (_client.py:1740)
+2026-03-11 22:59:23 [    INFO] HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 429 Too Many Requests" (_client.py:1740)
+2026-03-11 22:59:23 [    INFO] HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 429 Too Many Requests" (_client.py:1740)
+2026-03-11 22:59:23 [    INFO] HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 429 Too Many Requests" (_client.py:1740)
+2026-03-11 22:59:23 [    INFO] HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 429 Too Many Requests" (_client.py:1740)
+2026-03-11 22:59:23 [    INFO] HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 429 Too Many Requests" (_client.py:1740)
+2026-03-11 22:59:23 [    INFO] HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 429 Too Many Requests" (_client.py:1740)
+2026-03-11 22:59:25 [ WARNING] Page returned 404:  (page_controller.py:117)
+2026-03-11 22:59:25 [ WARNING] Page returned 404:  (page_controller.py:117)
+2026-03-11 22:59:26 [ WARNING] DOM snapshot failed: CDPSession.send: Protocol error (DOMSnapshot.captureSnapshot): invalid CSS property (accessibility_tree.py:191)
+2026-03-11 22:59:26 [ WARNING] DOM snapshot failed: CDPSession.send: Protocol error (DOMSnapshot.captureSnapshot): invalid CSS property (accessibility_tree.py:191)
+2026-03-11 22:59:26 [ WARNING] Metrics collection failed: 'Page' object has no attribute 'metrics' (page_controller.py:176)
+2026-03-11 22:59:26 [ WARNING] Metrics collection failed: 'Page' object has no attribute 'metrics' (page_controller.py:176)
+2026-03-11 22:59:26 [ WARNING] Engine wcag not found (audit_orchestrator.py:48)
+2026-03-11 22:59:26 [ WARNING] Engine structural not found (audit_orchestrator.py:48)
+2026-03-11 22:59:26 [ WARNING] Engine contrast not found (audit_orchestrator.py:48)
+2026-03-11 22:59:26 [    INFO] Audit complete: 0 issues found (audit_orchestrator.py:81)
+2026-03-11 22:59:26 [    INFO] Audit 7f879a56-2d66-448e-81fc-2109c0556d9b completed with 0 issues (routes.py:148)
+2026-03-11 22:59:26 [    INFO] HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 200 OK" (_client.py:1740)
+2026-03-11 22:59:26 [ WARNING] Engine wcag not found (audit_orchestrator.py:48)
+2026-03-11 22:59:26 [ WARNING] Engine structural not found (audit_orchestrator.py:48)
+2026-03-11 22:59:26 [ WARNING] Engine contrast not found (audit_orchestrator.py:48)
+2026-03-11 22:59:26 [    INFO] Audit complete: 0 issues found (audit_orchestrator.py:81)
+2026-03-11 22:59:26 [    INFO] Audit 5cdc7f55-cdec-4ed9-b223-d3951972efd6 completed with 0 issues (routes.py:148)
+2026-03-11 22:59:26 [    INFO] HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 200 OK" (_client.py:1740)
+FAILED                                                                   [ 37%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:26 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:26 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:26 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_contrast_engine.py::test_color_parser 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:59:27 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:59:28 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:59:28 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:59:28 [    INFO] Registered 3 engines (main.py:45)
+PASSED                                                                   [ 40%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:28 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:28 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:28 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_contrast_engine.py::test_contrast_calculation 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:59:28 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:59:30 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:59:30 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:59:30 [    INFO] Registered 3 engines (main.py:45)
+PASSED                                                                   [ 42%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:30 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:30 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:30 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_contrast_engine.py::test_contrast_thresholds 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:59:30 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:59:32 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:59:32 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:59:32 [    INFO] Registered 3 engines (main.py:45)
+PASSED                                                                   [ 45%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:32 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:32 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:32 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_contrast_engine.py::test_contrast_grades 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:59:32 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:59:33 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:59:33 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:59:33 [    INFO] Registered 3 engines (main.py:45)
+PASSED                                                                   [ 47%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:33 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:34 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:34 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_contrast_engine.py::test_contrast_engine_analysis 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:59:34 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:59:35 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:59:35 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:59:35 [    INFO] Registered 3 engines (main.py:45)
+PASSED                                                                   [ 50%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:37 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:37 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:37 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_error_recovery.py::test_wcag_engine_recovers_from_axe_timeout 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:59:37 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:59:39 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:59:39 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:59:39 [    INFO] Registered 3 engines (main.py:45)
+FAILED                                                                   [ 52%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:39 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:39 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:39 [    INFO] Cleanup complete (main.py:52)
+
+tests/test_error_recovery.py::test_wcag_engine_recovers_from_axe_exception 
+------------------------------- live log setup --------------------------------
+2026-03-11 22:59:39 [    INFO] Starting AccessLens API... (main.py:31)
+2026-03-11 22:59:40 [    INFO] Browser initialized successfully (browser_manager.py:59)
+2026-03-11 22:59:40 [    INFO] Browser manager initialized (main.py:35)
+2026-03-11 22:59:40 [    INFO] Registered 3 engines (main.py:45)
+FAILED                                                                   [ 55%]
+------------------------------ live log teardown ------------------------------
+2026-03-11 22:59:41 [    INFO] Shutting down AccessLens API... (main.py:50)
+2026-03-11 22:59:41 [    INFO] Browser closed (browser_manager.py:117)
+2026-03-11 22:59:41 [    INFO] Cleanup complete (main.py:52)
+
+
+================================== FAILURES ===================================
+_________________________ test_invalid_url_validation _________________________
+tests\test_api.py:122: in test_invalid_url_validation
+    assert response.status_code == 200
+E   assert 422 == 200
+E    +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+---------------------------- Captured stdout setup ----------------------------
+{"timestamp": "2026-03-11T17:29:10.757943", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 31, "message": "Starting AccessLens API..."}
+{"timestamp": "2026-03-11T17:29:12.285098", "level": "INFO", "logger": "app.core.browser_manager", "module": "browser_manager", "function": "initialize", "line": 59, "message": "Browser initialized successfully"}
+{"timestamp": "2026-03-11T17:29:12.285747", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 35, "message": "Browser manager initialized"}
+{"timestamp": "2026-03-11T17:29:12.286324", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 45, "message": "Registered 3 engines"}
+----------------------------- Captured log setup ------------------------------
+INFO     app.main:main.py:31 Starting AccessLens API...
+INFO     app.core.browser_manager:browser_manager.py:59 Browser initialized successfully
+INFO     app.main:main.py:35 Browser manager initialized
+INFO     app.main:main.py:45 Registered 3 engines
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-03-11T17:29:12.300787", "level": "INFO", "logger": "httpx", "module": "_client", "function": "_send_single_request", "line": 1740, "message": "HTTP Request: POST http://test/api/v1/audit \"HTTP/1.1 422 Unprocessable Entity\""}
+------------------------------ Captured log call ------------------------------
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 422 Unprocessable Entity"
+-------------------------- Captured stdout teardown ---------------------------
+{"timestamp": "2026-03-11T17:29:12.332211", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 50, "message": "Shutting down AccessLens API..."}
+{"timestamp": "2026-03-11T17:29:12.473944", "level": "INFO", "logger": "app.core.browser_manager", "module": "browser_manager", "function": "close", "line": 117, "message": "Browser closed"}
+{"timestamp": "2026-03-11T17:29:12.474729", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 52, "message": "Cleanup complete"}
+---------------------------- Captured log teardown ----------------------------
+INFO     app.main:main.py:50 Shutting down AccessLens API...
+INFO     app.core.browser_manager:browser_manager.py:117 Browser closed
+INFO     app.main:main.py:52 Cleanup complete
+________________________ test_color_parser_edge_cases _________________________
+tests\test_color_utils_edge.py:8: in test_color_parser_edge_cases
+    assert ColorParser.parse("FFF") == RGBColor(255, 255, 255) # Assuming parsing FFF as FFFFFF
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: assert None == RGBColor(r=255, g=255, b=255)
+E    +  where None = <function ColorParser.parse at 0x00000243CBED4EA0>('FFF')
+E    +    where <function ColorParser.parse at 0x00000243CBED4EA0> = ColorParser.parse
+E    +  and   RGBColor(r=255, g=255, b=255) = RGBColor(255, 255, 255)
+---------------------------- Captured stdout setup ----------------------------
+{"timestamp": "2026-03-11T17:29:19.243565", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 31, "message": "Starting AccessLens API..."}
+{"timestamp": "2026-03-11T17:29:20.512220", "level": "INFO", "logger": "app.core.browser_manager", "module": "browser_manager", "function": "initialize", "line": 59, "message": "Browser initialized successfully"}
+{"timestamp": "2026-03-11T17:29:20.513209", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 35, "message": "Browser manager initialized"}
+{"timestamp": "2026-03-11T17:29:20.514042", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 45, "message": "Registered 3 engines"}
+----------------------------- Captured log setup ------------------------------
+INFO     app.main:main.py:31 Starting AccessLens API...
+INFO     app.core.browser_manager:browser_manager.py:59 Browser initialized successfully
+INFO     app.main:main.py:35 Browser manager initialized
+INFO     app.main:main.py:45 Registered 3 engines
+-------------------------- Captured stdout teardown ---------------------------
+{"timestamp": "2026-03-11T17:29:20.544578", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 50, "message": "Shutting down AccessLens API..."}
+{"timestamp": "2026-03-11T17:29:20.773829", "level": "INFO", "logger": "app.core.browser_manager", "module": "browser_manager", "function": "close", "line": 117, "message": "Browser closed"}
+{"timestamp": "2026-03-11T17:29:20.774583", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 52, "message": "Cleanup complete"}
+---------------------------- Captured log teardown ----------------------------
+INFO     app.main:main.py:50 Shutting down AccessLens API...
+INFO     app.core.browser_manager:browser_manager.py:117 Browser closed
+INFO     app.main:main.py:52 Cleanup complete
+________________________ test_audit_store_concurrency _________________________
+tests\test_concurrency.py:33: in test_audit_store_concurrency
+    assert successes == 10
+E   assert 2 == 10
+---------------------------- Captured stdout setup ----------------------------
+{"timestamp": "2026-03-11T17:29:22.265968", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 31, "message": "Starting AccessLens API..."}
+{"timestamp": "2026-03-11T17:29:23.651136", "level": "INFO", "logger": "app.core.browser_manager", "module": "browser_manager", "function": "initialize", "line": 59, "message": "Browser initialized successfully"}
+{"timestamp": "2026-03-11T17:29:23.652109", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 35, "message": "Browser manager initialized"}
+{"timestamp": "2026-03-11T17:29:23.653258", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 45, "message": "Registered 3 engines"}
+----------------------------- Captured log setup ------------------------------
+INFO     app.main:main.py:31 Starting AccessLens API...
+INFO     app.core.browser_manager:browser_manager.py:59 Browser initialized successfully
+INFO     app.main:main.py:35 Browser manager initialized
+INFO     app.main:main.py:45 Registered 3 engines
+---------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-03-11T17:29:23.741042", "level": "INFO", "logger": "app.api.routes", "module": "routes", "function": "start_audit", "line": 72, "message": "Starting audit 7f879a56-2d66-448e-81fc-2109c0556d9b for URL: https://example.com/page0"}
+{"timestamp": "2026-03-11T17:29:23.746754", "level": "INFO", "logger": "app.api.routes", "module": "routes", "function": "start_audit", "line": 72, "message": "Starting audit 5cdc7f55-cdec-4ed9-b223-d3951972efd6 for URL: https://example.com/page1"}
+{"timestamp": "2026-03-11T17:29:23.748406", "level": "WARNING", "logger": "slowapi", "module": "extension", "function": "__evaluate_limits", "line": 510, "message": "ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit"}
+{"timestamp": "2026-03-11T17:29:23.749622", "level": "WARNING", "logger": "slowapi", "module": "extension", "function": "__evaluate_limits", "line": 510, "message": "ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit"}
+{"timestamp": "2026-03-11T17:29:23.750815", "level": "WARNING", "logger": "slowapi", "module": "extension", "function": "__evaluate_limits", "line": 510, "message": "ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit"}
+{"timestamp": "2026-03-11T17:29:23.752590", "level": "WARNING", "logger": "slowapi", "module": "extension", "function": "__evaluate_limits", "line": 510, "message": "ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit"}
+{"timestamp": "2026-03-11T17:29:23.754536", "level": "WARNING", "logger": "slowapi", "module": "extension", "function": "__evaluate_limits", "line": 510, "message": "ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit"}
+{"timestamp": "2026-03-11T17:29:23.755836", "level": "WARNING", "logger": "slowapi", "module": "extension", "function": "__evaluate_limits", "line": 510, "message": "ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit"}
+{"timestamp": "2026-03-11T17:29:23.757913", "level": "WARNING", "logger": "slowapi", "module": "extension", "function": "__evaluate_limits", "line": 510, "message": "ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit"}
+{"timestamp": "2026-03-11T17:29:23.758958", "level": "WARNING", "logger": "slowapi", "module": "extension", "function": "__evaluate_limits", "line": 510, "message": "ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit"}
+{"timestamp": "2026-03-11T17:29:23.771110", "level": "INFO", "logger": "app.api.routes", "module": "routes", "function": "run_audit_background", "line": 140, "message": "Running audit 7f879a56-2d66-448e-81fc-2109c0556d9b in background"}
+{"timestamp": "2026-03-11T17:29:23.772139", "level": "INFO", "logger": "app.core.audit_orchestrator", "module": "audit_orchestrator", "function": "run_audit", "line": 31, "message": "Starting audit for https://example.com/page0"}
+{"timestamp": "2026-03-11T17:29:23.796119", "level": "INFO", "logger": "app.api.routes", "module": "routes", "function": "run_audit_background", "line": 140, "message": "Running audit 5cdc7f55-cdec-4ed9-b223-d3951972efd6 in background"}
+{"timestamp": "2026-03-11T17:29:23.796774", "level": "INFO", "logger": "app.core.audit_orchestrator", "module": "audit_orchestrator", "function": "run_audit", "line": 31, "message": "Starting audit for https://example.com/page1"}
+{"timestamp": "2026-03-11T17:29:23.826442", "level": "INFO", "logger": "httpx", "module": "_client", "function": "_send_single_request", "line": 1740, "message": "HTTP Request: POST http://test/api/v1/audit \"HTTP/1.1 429 Too Many Requests\""}
+{"timestamp": "2026-03-11T17:29:23.827738", "level": "INFO", "logger": "httpx", "module": "_client", "function": "_send_single_request", "line": 1740, "message": "HTTP Request: POST http://test/api/v1/audit \"HTTP/1.1 429 Too Many Requests\""}
+{"timestamp": "2026-03-11T17:29:23.829065", "level": "INFO", "logger": "httpx", "module": "_client", "function": "_send_single_request", "line": 1740, "message": "HTTP Request: POST http://test/api/v1/audit \"HTTP/1.1 429 Too Many Requests\""}
+{"timestamp": "2026-03-11T17:29:23.830232", "level": "INFO", "logger": "httpx", "module": "_client", "function": "_send_single_request", "line": 1740, "message": "HTTP Request: POST http://test/api/v1/audit \"HTTP/1.1 429 Too Many Requests\""}
+{"timestamp": "2026-03-11T17:29:23.831283", "level": "INFO", "logger": "httpx", "module": "_client", "function": "_send_single_request", "line": 1740, "message": "HTTP Request: POST http://test/api/v1/audit \"HTTP/1.1 429 Too Many Requests\""}
+{"timestamp": "2026-03-11T17:29:23.832528", "level": "INFO", "logger": "httpx", "module": "_client", "function": "_send_single_request", "line": 1740, "message": "HTTP Request: POST http://test/api/v1/audit \"HTTP/1.1 429 Too Many Requests\""}
+{"timestamp": "2026-03-11T17:29:23.833549", "level": "INFO", "logger": "httpx", "module": "_client", "function": "_send_single_request", "line": 1740, "message": "HTTP Request: POST http://test/api/v1/audit \"HTTP/1.1 429 Too Many Requests\""}
+{"timestamp": "2026-03-11T17:29:23.834605", "level": "INFO", "logger": "httpx", "module": "_client", "function": "_send_single_request", "line": 1740, "message": "HTTP Request: POST http://test/api/v1/audit \"HTTP/1.1 429 Too Many Requests\""}
+{"timestamp": "2026-03-11T17:29:25.172382", "level": "WARNING", "logger": "app.core.page_controller", "module": "page_controller", "function": "_navigate", "line": 117, "message": "Page returned 404: "}
+{"timestamp": "2026-03-11T17:29:25.205781", "level": "WARNING", "logger": "app.core.page_controller", "module": "page_controller", "function": "_navigate", "line": 117, "message": "Page returned 404: "}
+{"timestamp": "2026-03-11T17:29:26.570313", "level": "WARNING", "logger": "app.core.accessibility_tree", "module": "accessibility_tree", "function": "_get_dom_snapshot", "line": 191, "message": "DOM snapshot failed: CDPSession.send: Protocol error (DOMSnapshot.captureSnapshot): invalid CSS property"}
+{"timestamp": "2026-03-11T17:29:26.581765", "level": "WARNING", "logger": "app.core.accessibility_tree", "module": "accessibility_tree", "function": "_get_dom_snapshot", "line": 191, "message": "DOM snapshot failed: CDPSession.send: Protocol error (DOMSnapshot.captureSnapshot): invalid CSS property"}
+{"timestamp": "2026-03-11T17:29:26.776373", "level": "WARNING", "logger": "app.core.page_controller", "module": "page_controller", "function": "_get_page_metrics", "line": 176, "message": "Metrics collection failed: 'Page' object has no attribute 'metrics'"}
+{"timestamp": "2026-03-11T17:29:26.790418", "level": "WARNING", "logger": "app.core.page_controller", "module": "page_controller", "function": "_get_page_metrics", "line": 176, "message": "Metrics collection failed: 'Page' object has no attribute 'metrics'"}
+{"timestamp": "2026-03-11T17:29:26.798447", "level": "WARNING", "logger": "app.core.audit_orchestrator", "module": "audit_orchestrator", "function": "run_audit", "line": 48, "message": "Engine wcag not found"}
+{"timestamp": "2026-03-11T17:29:26.799013", "level": "WARNING", "logger": "app.core.audit_orchestrator", "module": "audit_orchestrator", "function": "run_audit", "line": 48, "message": "Engine structural not found"}
+{"timestamp": "2026-03-11T17:29:26.799445", "level": "WARNING", "logger": "app.core.audit_orchestrator", "module": "audit_orchestrator", "function": "run_audit", "line": 48, "message": "Engine contrast not found"}
+{"timestamp": "2026-03-11T17:29:26.800124", "level": "INFO", "logger": "app.core.audit_orchestrator", "module": "audit_orchestrator", "function": "run_audit", "line": 81, "message": "Audit complete: 0 issues found"}
+{"timestamp": "2026-03-11T17:29:26.800514", "level": "INFO", "logger": "app.api.routes", "module": "routes", "function": "run_audit_background", "line": 148, "message": "Audit 7f879a56-2d66-448e-81fc-2109c0556d9b completed with 0 issues"}
+{"timestamp": "2026-03-11T17:29:26.814756", "level": "INFO", "logger": "httpx", "module": "_client", "function": "_send_single_request", "line": 1740, "message": "HTTP Request: POST http://test/api/v1/audit \"HTTP/1.1 200 OK\""}
+{"timestamp": "2026-03-11T17:29:26.820132", "level": "WARNING", "logger": "app.core.audit_orchestrator", "module": "audit_orchestrator", "function": "run_audit", "line": 48, "message": "Engine wcag not found"}
+{"timestamp": "2026-03-11T17:29:26.820767", "level": "WARNING", "logger": "app.core.audit_orchestrator", "module": "audit_orchestrator", "function": "run_audit", "line": 48, "message": "Engine structural not found"}
+{"timestamp": "2026-03-11T17:29:26.821139", "level": "WARNING", "logger": "app.core.audit_orchestrator", "module": "audit_orchestrator", "function": "run_audit", "line": 48, "message": "Engine contrast not found"}
+{"timestamp": "2026-03-11T17:29:26.821809", "level": "INFO", "logger": "app.core.audit_orchestrator", "module": "audit_orchestrator", "function": "run_audit", "line": 81, "message": "Audit complete: 0 issues found"}
+{"timestamp": "2026-03-11T17:29:26.822184", "level": "INFO", "logger": "app.api.routes", "module": "routes", "function": "run_audit_background", "line": 148, "message": "Audit 5cdc7f55-cdec-4ed9-b223-d3951972efd6 completed with 0 issues"}
+{"timestamp": "2026-03-11T17:29:26.823327", "level": "INFO", "logger": "httpx", "module": "_client", "function": "_send_single_request", "line": 1740, "message": "HTTP Request: POST http://test/api/v1/audit \"HTTP/1.1 200 OK\""}
+------------------------------ Captured log call ------------------------------
+INFO     app.api.routes:routes.py:72 Starting audit 7f879a56-2d66-448e-81fc-2109c0556d9b for URL: https://example.com/page0
+INFO     app.api.routes:routes.py:72 Starting audit 5cdc7f55-cdec-4ed9-b223-d3951972efd6 for URL: https://example.com/page1
+WARNING  slowapi:extension.py:510 ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit
+WARNING  slowapi:extension.py:510 ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit
+WARNING  slowapi:extension.py:510 ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit
+WARNING  slowapi:extension.py:510 ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit
+WARNING  slowapi:extension.py:510 ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit
+WARNING  slowapi:extension.py:510 ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit
+WARNING  slowapi:extension.py:510 ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit
+WARNING  slowapi:extension.py:510 ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: /api/v1/audit
+INFO     app.api.routes:routes.py:140 Running audit 7f879a56-2d66-448e-81fc-2109c0556d9b in background
+INFO     app.core.audit_orchestrator:audit_orchestrator.py:31 Starting audit for https://example.com/page0
+INFO     app.api.routes:routes.py:140 Running audit 5cdc7f55-cdec-4ed9-b223-d3951972efd6 in background
+INFO     app.core.audit_orchestrator:audit_orchestrator.py:31 Starting audit for https://example.com/page1
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 429 Too Many Requests"
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 429 Too Many Requests"
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 429 Too Many Requests"
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 429 Too Many Requests"
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 429 Too Many Requests"
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 429 Too Many Requests"
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 429 Too Many Requests"
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 429 Too Many Requests"
+WARNING  app.core.page_controller:page_controller.py:117 Page returned 404: 
+WARNING  app.core.page_controller:page_controller.py:117 Page returned 404: 
+WARNING  app.core.accessibility_tree:accessibility_tree.py:191 DOM snapshot failed: CDPSession.send: Protocol error (DOMSnapshot.captureSnapshot): invalid CSS property
+WARNING  app.core.accessibility_tree:accessibility_tree.py:191 DOM snapshot failed: CDPSession.send: Protocol error (DOMSnapshot.captureSnapshot): invalid CSS property
+WARNING  app.core.page_controller:page_controller.py:176 Metrics collection failed: 'Page' object has no attribute 'metrics'
+WARNING  app.core.page_controller:page_controller.py:176 Metrics collection failed: 'Page' object has no attribute 'metrics'
+WARNING  app.core.audit_orchestrator:audit_orchestrator.py:48 Engine wcag not found
+WARNING  app.core.audit_orchestrator:audit_orchestrator.py:48 Engine structural not found
+WARNING  app.core.audit_orchestrator:audit_orchestrator.py:48 Engine contrast not found
+INFO     app.core.audit_orchestrator:audit_orchestrator.py:81 Audit complete: 0 issues found
+INFO     app.api.routes:routes.py:148 Audit 7f879a56-2d66-448e-81fc-2109c0556d9b completed with 0 issues
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 200 OK"
+WARNING  app.core.audit_orchestrator:audit_orchestrator.py:48 Engine wcag not found
+WARNING  app.core.audit_orchestrator:audit_orchestrator.py:48 Engine structural not found
+WARNING  app.core.audit_orchestrator:audit_orchestrator.py:48 Engine contrast not found
+INFO     app.core.audit_orchestrator:audit_orchestrator.py:81 Audit complete: 0 issues found
+INFO     app.api.routes:routes.py:148 Audit 5cdc7f55-cdec-4ed9-b223-d3951972efd6 completed with 0 issues
+INFO     httpx:_client.py:1740 HTTP Request: POST http://test/api/v1/audit "HTTP/1.1 200 OK"
+-------------------------- Captured stdout teardown ---------------------------
+{"timestamp": "2026-03-11T17:29:26.839231", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 50, "message": "Shutting down AccessLens API..."}
+{"timestamp": "2026-03-11T17:29:26.995043", "level": "INFO", "logger": "app.core.browser_manager", "module": "browser_manager", "function": "close", "line": 117, "message": "Browser closed"}
+{"timestamp": "2026-03-11T17:29:26.995560", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 52, "message": "Cleanup complete"}
+---------------------------- Captured log teardown ----------------------------
+INFO     app.main:main.py:50 Shutting down AccessLens API...
+INFO     app.core.browser_manager:browser_manager.py:117 Browser closed
+INFO     app.main:main.py:52 Cleanup complete
+_________________ test_wcag_engine_recovers_from_axe_timeout __________________
+app\engines\wcag_engine.py:45: in analyze
+    results = await asyncio.wait_for(self.axe.run(page), timeout=30.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\asyncio\tasks.py:507: in wait_for
+    return await fut
+           ^^^^^^^^^
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py:2321: in _execute_mock_call
+    raise effect
+E   TimeoutError: Axe took too long
+
+During handling of the above exception, another exception occurred:
+app\engines\wcag_engine.py:47: in analyze
+    self._logger.error("Axe-core execution timed out.")
+    ^^^^^^^^^^^^
+E   AttributeError: 'WCAGEngine' object has no attribute '_logger'
+
+During handling of the above exception, another exception occurred:
+tests\test_error_recovery.py:17: in test_wcag_engine_recovers_from_axe_timeout
+    issues = await engine.analyze({"page": mock_page}, request=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app\engines\wcag_engine.py:67: in analyze
+    self._logger.error(f"WCAG analysis failed: {e}")
+    ^^^^^^^^^^^^
+E   AttributeError: 'WCAGEngine' object has no attribute '_logger'
+---------------------------- Captured stdout setup ----------------------------
+{"timestamp": "2026-03-11T17:29:37.798474", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 31, "message": "Starting AccessLens API..."}
+{"timestamp": "2026-03-11T17:29:39.141164", "level": "INFO", "logger": "app.core.browser_manager", "module": "browser_manager", "function": "initialize", "line": 59, "message": "Browser initialized successfully"}
+{"timestamp": "2026-03-11T17:29:39.142159", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 35, "message": "Browser manager initialized"}
+{"timestamp": "2026-03-11T17:29:39.144410", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 45, "message": "Registered 3 engines"}
+----------------------------- Captured log setup ------------------------------
+INFO     app.main:main.py:31 Starting AccessLens API...
+INFO     app.core.browser_manager:browser_manager.py:59 Browser initialized successfully
+INFO     app.main:main.py:35 Browser manager initialized
+INFO     app.main:main.py:45 Registered 3 engines
+-------------------------- Captured stdout teardown ---------------------------
+{"timestamp": "2026-03-11T17:29:39.422761", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 50, "message": "Shutting down AccessLens API..."}
+{"timestamp": "2026-03-11T17:29:39.587040", "level": "INFO", "logger": "app.core.browser_manager", "module": "browser_manager", "function": "close", "line": 117, "message": "Browser closed"}
+{"timestamp": "2026-03-11T17:29:39.587809", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 52, "message": "Cleanup complete"}
+---------------------------- Captured log teardown ----------------------------
+INFO     app.main:main.py:50 Shutting down AccessLens API...
+INFO     app.core.browser_manager:browser_manager.py:117 Browser closed
+INFO     app.main:main.py:52 Cleanup complete
+________________ test_wcag_engine_recovers_from_axe_exception _________________
+app\engines\wcag_engine.py:45: in analyze
+    results = await asyncio.wait_for(self.axe.run(page), timeout=30.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\asyncio\tasks.py:507: in wait_for
+    return await fut
+           ^^^^^^^^^
+..\..\..\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py:2321: in _execute_mock_call
+    raise effect
+E   Exception: Failed to inject axe
+
+During handling of the above exception, another exception occurred:
+app\engines\wcag_engine.py:50: in analyze
+    self._logger.error(f"Axe-core injection or execution failed: {inner_e}")
+    ^^^^^^^^^^^^
+E   AttributeError: 'WCAGEngine' object has no attribute '_logger'
+
+During handling of the above exception, another exception occurred:
+tests\test_error_recovery.py:30: in test_wcag_engine_recovers_from_axe_exception
+    issues = await engine.analyze({"page": mock_page}, request=None)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app\engines\wcag_engine.py:67: in analyze
+    self._logger.error(f"WCAG analysis failed: {e}")
+    ^^^^^^^^^^^^
+E   AttributeError: 'WCAGEngine' object has no attribute '_logger'
+---------------------------- Captured stdout setup ----------------------------
+{"timestamp": "2026-03-11T17:29:39.596410", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 31, "message": "Starting AccessLens API..."}
+{"timestamp": "2026-03-11T17:29:40.909325", "level": "INFO", "logger": "app.core.browser_manager", "module": "browser_manager", "function": "initialize", "line": 59, "message": "Browser initialized successfully"}
+{"timestamp": "2026-03-11T17:29:40.910381", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 35, "message": "Browser manager initialized"}
+{"timestamp": "2026-03-11T17:29:40.911220", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 45, "message": "Registered 3 engines"}
+----------------------------- Captured log setup ------------------------------
+INFO     app.main:main.py:31 Starting AccessLens API...
+INFO     app.core.browser_manager:browser_manager.py:59 Browser initialized successfully
+INFO     app.main:main.py:35 Browser manager initialized
+INFO     app.main:main.py:45 Registered 3 engines
+-------------------------- Captured stdout teardown ---------------------------
+{"timestamp": "2026-03-11T17:29:41.181779", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 50, "message": "Shutting down AccessLens API..."}
+{"timestamp": "2026-03-11T17:29:41.421510", "level": "INFO", "logger": "app.core.browser_manager", "module": "browser_manager", "function": "close", "line": 117, "message": "Browser closed"}
+{"timestamp": "2026-03-11T17:29:41.422519", "level": "INFO", "logger": "app.main", "module": "main", "function": "lifespan", "line": 52, "message": "Cleanup complete"}
+---------------------------- Captured log teardown ----------------------------
+INFO     app.main:main.py:50 Shutting down AccessLens API...
+INFO     app.core.browser_manager:browser_manager.py:117 Browser closed
+INFO     app.main:main.py:52 Cleanup complete
+=========================== short test summary info ===========================
+FAILED tests/test_api.py::test_invalid_url_validation - assert 422 == 200
+FAILED tests/test_color_utils_edge.py::test_color_parser_edge_cases - Asserti...
+FAILED tests/test_concurrency.py::test_audit_store_concurrency - assert 2 == 10
+FAILED tests/test_error_recovery.py::test_wcag_engine_recovers_from_axe_timeout
+FAILED tests/test_error_recovery.py::test_wcag_engine_recovers_from_axe_exception
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 5 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+================== 5 failed, 17 passed, 1 skipped in 57.36s ===================

@@ -21,7 +21,6 @@ class RGBColor:
 
     def to_luminance(self) -> float:
 
-
         rs = self.r / 255
         gs = self.g / 255
         bs = self.b / 255
@@ -35,7 +34,6 @@ class RGBColor:
         return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
 class ColorParser:
-
 
     @staticmethod
     def parse(color_str: str) -> Optional[RGBColor]:
@@ -60,6 +58,9 @@ class ColorParser:
         elif color_str.startswith('hsl'):
             return ColorParser._parse_hsl(color_str)
 
+        if len(color_str) in [3, 6] and all(c in '0123456789abcdefABCDEF' for c in color_str):
+            return ColorParser._parse_hex(color_str)
+
         return None
 
     @staticmethod
@@ -70,11 +71,9 @@ class ColorParser:
         match = re.match(pattern, rgb_str.strip())
 
         if match:
-            return RGBColor(
-                r=int(match.group(1)),
-                g=int(match.group(2)),
-                b=int(match.group(3))
-            )
+            r, g, b = int(match.group(1)), int(match.group(2)), int(match.group(3))
+            if all(0 <= c <= 255 for c in (r, g, b)):
+                return RGBColor(r=r, g=g, b=b)
         return None
 
     @staticmethod
@@ -158,8 +157,6 @@ class ColorParser:
     }
 
 class ContrastCalculator:
-
-
     @staticmethod
     def calculate_ratio(color1: RGBColor, color2: RGBColor) -> float:
 

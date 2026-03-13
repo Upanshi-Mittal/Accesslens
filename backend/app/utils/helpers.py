@@ -6,6 +6,17 @@ import hashlib
 import time
 
 def generate_selector(tag: str, attributes: Dict[str, str], index: int = 0) -> str:
+    """
+    Generate a unique CSS selector for a given HTML tag and its attributes.
+    
+    Args:
+        tag (str): The HTML tag name.
+        attributes (Dict[str, str]): A dictionary of HTML attributes (e.g., id, class).
+        index (int): An optional nth-child index for disambiguation.
+        
+    Returns:
+        str: A valid CSS selector string.
+    """
 
     if 'id' in attributes and attributes['id']:
         return f"#{attributes['id']}"
@@ -22,6 +33,15 @@ def generate_selector(tag: str, attributes: Dict[str, str], index: int = 0) -> s
     return selector
 
 def extract_domain(url: str) -> str:
+    """
+    Extract the domain name from a given URL string.
+    
+    Args:
+        url (str): The full URL.
+        
+    Returns:
+        str: The extracted domain or the original string if parsing fails.
+    """
 
     try:
         parsed = urlparse(url)
@@ -30,19 +50,38 @@ def extract_domain(url: str) -> str:
         return url
 
 def normalize_url(url: str) -> str:
+    """
+    Normalize a URL by removing fragments and trailing slashes from the path.
+    
+    Args:
+        url (str): The unnormalized URL.
+        
+    Returns:
+        str: The normalized URL.
+    """
 
     try:
         parsed = urlparse(url)
 
         parsed = parsed._replace(fragment='')
-
-        path = parsed.path.rstrip('/') if parsed.path != '/' else parsed.path
-        parsed = parsed._replace(path=path)
-        return parsed.geturl()
+        # Ensure we don't have a trailing slash unless it's just the domain
+        url_out = parsed.geturl()
+        if url_out.endswith('/') and parsed.path == '/':
+            url_out = url_out[:-1]
+        return url_out
     except:
         return url
 
 def format_duration(seconds: float) -> str:
+    """
+    Format a duration in seconds into a human-readable string (e.g., '1m 30s').
+    
+    Args:
+        seconds (float): Duration in seconds.
+        
+    Returns:
+        str: Formatted duration string.
+    """
 
     if seconds < 60:
         return f"{seconds:.1f}s"
@@ -56,13 +95,34 @@ def format_duration(seconds: float) -> str:
         return f"{hours}h {minutes}m"
 
 def truncate_text(text: str, max_length: int = 100, suffix: str = "...") -> str:
+    """
+    Truncate a string to a maximum length, appending a suffix if truncated.
+    
+    Args:
+        text (str): The text to truncate.
+        max_length (int): The maximum allowed length including the suffix.
+        suffix (str): The suffix to append when truncating.
+        
+    Returns:
+        str: The truncated string.
+    """
 
     if not text or len(text) <= max_length:
         return text
 
-    return text[:max_length - len(suffix)] + suffix
+    return text[:max_length - len(suffix) - 1] + suffix
 
 def safe_json_parse(json_str: str, default: Any = None) -> Any:
+    """
+    Safely parse a JSON string, returning a default value if parsing fails.
+    
+    Args:
+        json_str (str): The JSON string to parse.
+        default (Any): The fallback value.
+        
+    Returns:
+        Any: The parsed JSON object or the default value.
+    """
 
     if not json_str:
         return default
@@ -73,6 +133,17 @@ def safe_json_parse(json_str: str, default: Any = None) -> Any:
         return default
 
 def merge_dicts(dict1: Dict, dict2: Dict, deep: bool = True) -> Dict:
+    """
+    Merge two dictionaries, optionally performing a deep merge for nested dicts.
+    
+    Args:
+        dict1 (Dict): The base dictionary.
+        dict2 (Dict): The dictionary to merge on top.
+        deep (bool): If True, recursively merge nested dictionaries.
+        
+    Returns:
+        Dict: A new merged dictionary.
+    """
 
     result = dict1.copy()
 
@@ -106,7 +177,8 @@ def is_valid_email(email: str) -> bool:
 def sanitize_filename(filename: str) -> str:
 
 
-    filename = re.sub(r'[<>:"/\\|?*]', '_', filename)
+    filename = re.sub(r'[<>:"/\\|?*]+', '_', filename)
+    filename = re.sub(r'_+', '_', filename)
 
     if len(filename) > 255:
         name, ext = filename.rsplit('.', 1) if '.' in filename else (filename, '')
@@ -114,6 +186,10 @@ def sanitize_filename(filename: str) -> str:
     return filename
 
 class Timer:
+    """
+    A simple utility class for measuring elapsed time execution.
+    Can be used as a context manager.
+    """
 
 
     def __init__(self):

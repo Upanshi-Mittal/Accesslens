@@ -1,9 +1,12 @@
 
 import asyncio
 import json
+import logging
 from typing import List, Dict, Any, Optional
 from axe_playwright_python.async_playwright import Axe as AsyncAxe
 from axe_playwright_python.sync_playwright import Axe as SyncAxe
+
+logger = logging.getLogger(__name__)
 from ..models.schemas import (
     UnifiedIssue, IssueSeverity, IssueSource,
     ConfidenceLevel, WCAGCriteria, ElementLocation,
@@ -40,47 +43,57 @@ class WCAGEngine(BaseAccessibilityEngine):
             return []
 
         try:
-
-            results = await self.axe.run(page)
+            # Add timeout protection specifically for axe injection/run
+            try:
+                results = await asyncio.wait_for(self.axe.run(page), timeout=30.0)
+            except asyncio.TimeoutError:
+                logger.error("Axe-core execution timed out.")
+                return []
+            except Exception as inner_e:
+                logger.error(f"Axe-core injection or execution failed: {inner_e}")
+                return []
 
             issues = []
 
-
             for violation in results.violations:
-                issue = await self._convert_violation(violation)
-                issues.append(issue)
-
+                for node in violation.nodes:
+                    issue = await self._convert_violation(violation, node, page)
+                    issues.append(issue)
 
                 for incomplete in results.incomplete:
                     if incomplete.id == violation.id:
-                        issue.confidence = ConfidenceLevel.LOW
-                        issue.confidence_score = 50
+                        for node in incomplete.nodes:
+                            issue = await self._convert_violation(violation, node, page)
+                            issue.confidence = ConfidenceLevel.LOW
+                            issue.confidence_score = 50
+                            issues.append(issue)
 
             return issues
 
         except Exception as e:
-            self._logger.error(f"WCAG analysis failed: {e}")
+            logger.error(f"WCAG analysis failed: {e}")
             return []
 
-    async def _convert_violation(self, violation: Dict[str, Any]) -> UnifiedIssue:
-
-
-
-        first_node = violation.nodes[0] if violation.nodes else {}
-
-
+    async def _convert_violation(self, violation: Dict[str, Any], node: Dict[str, Any], page: Any) -> UnifiedIssue:
         wcag_criteria = []
-        for tag in violation.tags:
-            if tag.startswith("wcag"):
+        wcag_level = "AA"
+        if "wcag2a" in violation.tags:
+            wcag_level = "A"
+        elif "wcag2aa" in violation.tags:
+            wcag_level = "AA"
+        elif "wcag2aaa" in violation.tags:
+            wcag_level = "AAA"
 
-                wcag_id = tag[4] + "." + tag[5] + "." + tag[6]
+        for tag in violation.tags:
+            if tag.startswith("wcag") and len(tag) >= 7 and tag[4:].isdigit():
+                digits = tag[4:]
+                wcag_id = ".".join(digits[i] for i in range(len(digits)))
                 wcag_criteria.append(WCAGCriteria(
                     id=wcag_id,
-                    level=violation.impact or "AA",
+                    level=wcag_level,
                     title=violation.help,
                     url=violation.helpUrl
                 ))
-
 
         confidence_score = ConfidenceCalculator.calculate_confidence(
             "wcag_deterministic",
@@ -92,13 +105,29 @@ class WCAGEngine(BaseAccessibilityEngine):
             })
         )
 
+        bounding_box = None
+        selector = node.get("target", [""])[0]
+        if selector:
+            try:
+                element = await page.query_selector(selector)
+                if element:
+                    box = await element.bounding_box()
+                    if box:
+                        bounding_box = {
+                            "x": box["x"],
+                            "y": box["y"],
+                            "width": box["width"],
+                            "height": box["height"]
+                        }
+            except Exception as e:
+                logger.warning(f"Failed to get bounding box for {selector}: {e}")
 
         remediation = None
-        if first_node.get("html"):
+        if node.get("html"):
             remediation = RemediationSuggestion(
                 description=f"Fix {violation.id}: {violation.help}",
-                code_before=first_node.get("html"),
-                code_after=self._suggest_fix(violation.id, first_node)
+                code_before=node.get("html"),
+                code_after=self._suggest_fix(violation.id, node)
             )
 
         return UnifiedIssue(
@@ -114,16 +143,17 @@ class WCAGEngine(BaseAccessibilityEngine):
             source=IssueSource.WCAG_DETERMINISTIC,
             wcag_criteria=wcag_criteria,
             location=ElementLocation(
-                selector=first_node.get("target", [""])[0],
-                html=first_node.get("html"),
-                node_index=0
+                selector=selector,
+                html=node.get("html"),
+                node_index=0,
+                bounding_box=bounding_box
             ),
-            actual_value=first_node.get("html"),
+            actual_value=node.get("html"),
             expected_value=self._get_expected_value(violation.id),
             remediation=remediation,
             evidence=EvidenceData(
-                stack_trace=first_node.get("failureSummary"),
-                dom_snapshot=first_node
+                stack_trace=node.get("failureSummary"),
+                dom_snapshot=node
             ),
             engine_name=self.name,
             engine_version=self.version,

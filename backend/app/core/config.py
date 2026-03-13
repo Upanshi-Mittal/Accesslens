@@ -1,15 +1,16 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import Field
+from pydantic import Field, field_validator
 from typing import Optional, List
 from pathlib import Path
 
 class Settings(BaseSettings):
-    """Pydantic configuration settings for the AccessLens application."""
 
     # API Settings
     api_host: str = Field("0.0.0.0", alias="API_HOST")
     api_port: int = Field(8000, alias="API_PORT")
     debug: bool = Field(False, alias="DEBUG")
+    testing: bool = Field(False, alias="TESTING")
+    rate_limit_per_minute: int = Field(100, alias="RATE_LIMIT_PER_MINUTE")
 
     # Browser Settings
     browser_headless: bool = Field(True, alias="BROWSER_HEADLESS")
@@ -26,6 +27,16 @@ class Settings(BaseSettings):
         ["wcag_deterministic", "contrast_engine", "structural_engine", "ai_engine"],
         alias="ENABLED_ENGINES"
     )
+    enable_ai_engine: bool = Field(True, alias="ENABLE_AI_ENGINE")
+
+    @field_validator('enabled_engines')
+    @classmethod
+    def validate_engines(cls, v: List[str]) -> List[str]:
+        valid_engines = {"wcag_deterministic", "contrast_engine", "structural_engine", "ai_engine"}
+        invalid = [e for e in v if e not in valid_engines]
+        if invalid:
+            raise ValueError(f"Invalid engines configured: {invalid}")
+        return v
 
     # Thresholds
     contrast_thresholds: dict = Field(
@@ -37,6 +48,14 @@ class Settings(BaseSettings):
         },
         alias="CONTRAST_THRESHOLDS"
     )
+
+    @field_validator('contrast_thresholds')
+    @classmethod
+    def validate_thresholds(cls, v: dict) -> dict:
+        for k, val in v.items():
+            if not isinstance(val, (int, float)) or not (1.0 <= val <= 21.0):
+                raise ValueError(f"Contrast threshold for {k} must be between 1.0 and 21.0")
+        return v
 
     # Confidence Weights
     confidence_weights: dict = Field(
@@ -68,14 +87,24 @@ class Settings(BaseSettings):
     mistral_model_path: Path = Field(Path("./models/mistral-7b"), alias="MISTRAL_MODEL_PATH")
     ai_use_local: bool = Field(True, alias="AI_USE_LOCAL")
     ai_confidence_threshold: float = Field(0.7, alias="AI_CONFIDENCE_THRESHOLD")
+    ai_max_retries: int = Field(3, alias="AI_MAX_RETRIES")
+    ai_retry_delay: float = Field(1.0, alias="AI_RETRY_DELAY")
+    ai_default_score: int = Field(85, alias="AI_DEFAULT_SCORE")
 
     # AI Endpoints
     llava_endpoint: str = Field("http://localhost:8001", alias="LLAVA_ENDPOINT")
     mistral_endpoint: str = Field("http://localhost:8002", alias="MISTRAL_ENDPOINT")
 
-    # Infrastructure
-    database_url: Optional[str] = Field(None, alias="DATABASE_URL")
-    redis_url: Optional[str] = Field(None, alias="REDIS_URL")
+    # Engine Heuristics
+    hover_simulation_delay: int = Field(100, alias="HOVER_SIMULATION_DELAY")
+    density_threshold: float = Field(20.0, alias="DENSITY_THRESHOLD")
+    max_focusable_elements: int = Field(10, alias="MAX_FOCUSABLE_ELEMENTS")
+
+    # Database
+    database_url: str = Field("postgresql://accesslens:accesslens@localhost:5432/accesslens", alias="DATABASE_URL")
+
+    # Redis
+    redis_url: Optional[str] = Field("redis://localhost:6379/0", alias="REDIS_URL")
 
     # Storage
     storage_path: Path = Field(Path("./data"), alias="STORAGE_PATH")

@@ -69,29 +69,39 @@ class ModelDownloader:
     def download_file(self, url: str, dest_path: Path, expected_size: int = None) -> bool:
 
         try:
+            resume_header = {}
+            file_mode = 'wb'
+            initial_pos = 0
 
             if dest_path.exists():
                 if expected_size and dest_path.stat().st_size == expected_size:
                     print(f"   {dest_path.name} already exists (size matches)")
                     return True
-                elif expected_size:
-                    print(f"   {dest_path.name} exists but size mismatch, re-downloading...")
                 else:
-                    print(f"   {dest_path.name} exists, skipping...")
-                    return True
-
+                    initial_pos = dest_path.stat().st_size
+                    print(f"   {dest_path.name} partially exists. Resuming from byte {initial_pos}...")
+                    resume_header = {'Range': f'bytes={initial_pos}-'}
+                    file_mode = 'ab'
 
             dest_path.parent.mkdir(parents=True, exist_ok=True)
 
-
-            response = self.session.get(url, stream=True, timeout=30)
+            response = self.session.get(url, headers=resume_header, stream=True, timeout=30)
+            
+            # 416 means Range not satisfiable (file is likely completely downloaded but mismatched)
+            if response.status_code == 416:
+                 print(f"   {dest_path.name} range error. Restarting download...")
+                 initial_pos = 0
+                 file_mode = 'wb'
+                 response = self.session.get(url, stream=True, timeout=30)
+                 
             response.raise_for_status()
 
-            total_size = int(response.headers.get('content-length', 0))
+            total_size = int(response.headers.get('content-length', 0)) + initial_pos
 
-            with open(dest_path, 'wb') as f:
+            with open(dest_path, file_mode) as f:
                 with tqdm(
                     total=total_size,
+                    initial=initial_pos,
                     unit='B',
                     unit_scale=True,
                     desc=f"  Downloading {dest_path.name}",

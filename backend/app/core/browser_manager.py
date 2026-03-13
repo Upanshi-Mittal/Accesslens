@@ -1,10 +1,12 @@
 
 import asyncio
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, AsyncGenerator
 from playwright.async_api import async_playwright, Browser, Page, BrowserContext
 import logging
 from datetime import datetime
 import traceback
+import time
+from contextlib import asynccontextmanager
 
 class BrowserManager:
 
@@ -59,14 +61,17 @@ class BrowserManager:
             self._logger.error(f"Failed to initialize browser: {e}")
             raise
 
-    async def get_page(self) -> Page:
-
+    async def get_page(self, timeout: float = 30.0) -> Page:
+        start_time = time.time()
         while True:
             async with self._lock:
                 can_allocate = self._active_pages < self._max_concurrent_pages
                 if can_allocate:
                     self._active_pages += 1
                     break
+
+            if time.time() - start_time > timeout:
+                raise TimeoutError(f"Timeout acquiring browser page after {timeout} seconds")
 
             self._logger.warning("Max concurrent pages reached, waiting...")
             await asyncio.sleep(1)
@@ -85,11 +90,20 @@ class BrowserManager:
 
         async with self._lock:
             try:
-                await page.close()
+                if not page.is_closed():
+                    await page.close()
             except Exception as e:
                 self._logger.error(f"Error closing page: {e}")
             finally:
                 self._active_pages -= 1
+
+    @asynccontextmanager
+    async def page_session(self, timeout: float = 30.0) -> AsyncGenerator[Page, None]:
+        page = await self.get_page(timeout=timeout)
+        try:
+            yield page
+        finally:
+            await self.release_page(page)
 
     async def close(self):
 

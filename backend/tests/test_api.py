@@ -118,7 +118,8 @@ async def test_invalid_url_validation():
             }
         )
 
-
-        assert response.status_code == 200
+        print(f"DEBUG TEST: Status={response.status_code}")
+        print(f"DEBUG TEST: Content={response.text}")
+        assert response.status_code == 422
         data = response.json()
-        assert "audit_id" in data
+        assert "detail" in data

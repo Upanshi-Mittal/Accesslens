@@ -58,7 +58,7 @@ class RemediationSuggestion(BaseModel):
 class EvidenceData(BaseModel):
 
     screenshot: Optional[str] = None
-    stack_trace: Optional[Dict[str, Any]] = None
+    stack_trace: Optional[Union[Dict[str, Any], str]] = None
     computed_values: Optional[Dict[str, Any]] = None
     dom_snapshot: Optional[Dict[str, Any]] = None
     ai_reasoning: Optional[str] = None
@@ -129,6 +129,7 @@ class AuditSummary(BaseModel):
     by_wcag_level: Dict[str, int]
     score: float
     confidence_avg: float
+    coverage_comparator: Dict[str, Any] = Field(default_factory=dict)
 
 class AuditReport(BaseModel):
 

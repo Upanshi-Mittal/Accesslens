@@ -25,6 +25,10 @@ class ContrastEngine(BaseAccessibilityEngine):
         page_data: Dict[str, Any],
         request: Dict[str, Any]
     ) -> List[UnifiedIssue]:
+        """
+        Coordinates the entire contrast analysis pipeline.
+        Extracts text, UI elements, and interactive states from the Playwright page and returns UnifiedIssues for any contrast failures.
+        """
         page = page_data.get("page")
         if not page:
             return []
@@ -48,6 +52,10 @@ class ContrastEngine(BaseAccessibilityEngine):
             return []
 
     async def _extract_text_elements(self, page: Page) -> List[Dict[str, Any]]:
+        """
+        Injects a JavaScript TreeWalker into the Playwright page to identify all visible text nodes.
+        Filters out scripts, styles, and hidden elements to build a map of actionable text.
+        """
         js_code = """
         (function() {
             const elements = [];
@@ -74,11 +82,10 @@ class ContrastEngine(BaseAccessibilityEngine):
             while (walker.nextNode()) {
                 const el = walker.currentNode;
                 const rect = el.getBoundingClientRect();
-                const computed = window.getComputedStyle(el);
                 if (rect.width === 0 || rect.height === 0) continue;
-                if (computed.visibility === 'hidden') continue;
-                if (computed.display === 'none') continue;
-                if (computed.opacity === '0') continue;
+                // Defer computed style until we prove it is visually rendered
+                const computed = window.getComputedStyle(el);
+                if (computed.visibility === 'hidden' || computed.display === 'none' || computed.opacity === '0') continue;
                 const fontSize = parseFloat(computed.fontSize);
                 const fontWeight = computed.fontWeight;
                 const isBold = parseInt(fontWeight) >= 700 || fontWeight === 'bold';
@@ -144,10 +151,9 @@ class ContrastEngine(BaseAccessibilityEngine):
             const uiElements = document.querySelectorAll(uiSelectors.join(','));
             uiElements.forEach(el => {
                 const rect = el.getBoundingClientRect();
-                const computed = window.getComputedStyle(el);
                 if (rect.width === 0 || rect.height === 0) return;
-                if (computed.visibility === 'hidden') return;
-                if (computed.display === 'none') return;
+                const computed = window.getComputedStyle(el);
+                if (computed.visibility === 'hidden' || computed.display === 'none') return;
                 elements.push({
                     selector: getUniqueSelector(el),
                     tag: el.tagName.toLowerCase(),
@@ -190,6 +196,10 @@ class ContrastEngine(BaseAccessibilityEngine):
             return []
 
     async def _analyze_text_contrast(self, element: Dict[str, Any], page: Page) -> Optional[UnifiedIssue]:
+        """
+        Calculates contrast between text foreground and background utilizing WCAG 2.0 formulas.
+        Determines the appropriate threshold dynamically based on font size and weight.
+        """
         fg_color = ColorParser.parse(element.get("color", ""))
         bg_color = ColorParser.parse(element.get("backgroundColor", ""))
         if not fg_color or not bg_color: return None
@@ -274,6 +284,10 @@ class ContrastEngine(BaseAccessibilityEngine):
             return None
 
     async def _analyze_interactive_states(self, page: Page) -> List[UnifiedIssue]:
+        """
+        Simulates mouse hover events on interactive elements to capture their dynamic 'hover' state styling.
+        Verifies that the hover contrast remains WCAG compliant.
+        """
         issues = []
         js_code = """
         (function() {
@@ -331,7 +345,7 @@ class ContrastEngine(BaseAccessibilityEngine):
             el.style.transition = 'none';
             const hoverEvent = new MouseEvent('mouseover', {view: window, bubbles: true, cancelable: true});
             el.dispatchEvent(hoverEvent);
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, ${Math.round(settings.hover_simulation_delay * 1000)}));
             const computed = window.getComputedStyle(el);
             const styles = {color: computed.color, backgroundColor: computed.backgroundColor};
             el.style.transition = originalTransition;

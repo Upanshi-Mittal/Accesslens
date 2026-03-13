@@ -1,12 +1,10 @@
-
-
-
 import pytest
 import asyncio
 from typing import Generator, Dict, Any
 from playwright.async_api import async_playwright, Browser, Page
 from app.core.config import settings
 from app.core.browser_manager import browser_manager
+from app.utils.cache import cache_manager
 
 # Removed deprecated session-scoped event_loop fixture
 
@@ -56,7 +54,11 @@ async def setup_test_env():
 
 
     settings.debug = True
+    settings.testing = True
     settings.log_level = "DEBUG"
+    
+    await cache_manager.initialize()
+    await cache_manager.clear()
 
     async with lifespan(app):
         yield

@@ -1,24 +1,18 @@
-# backend/scripts/dev.sh
-#!/bin/bash
 
-# Development script for AccessLens
 set -e
 
-# Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
 echo -e "${GREEN} Starting AccessLens Development Environment${NC}"
 echo "========================================"
 
-# Function to check if a command exists
+
 command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
-
-# Check for required tools
 echo -e "\n${YELLOW}Checking prerequisites...${NC}"
 
 if ! command_exists python3; then
@@ -74,7 +68,7 @@ esac
 
 # Start backend
 echo -e "\n${YELLOW}Starting backend server...${NC}"
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 &
+uvicorn app.main:app --reload --reload-dir app --host 0.0.0.0 --port 8000 &
 BACKEND_PID=$!
 echo -e "${GREEN} Backend started (PID: $BACKEND_PID)${NC}"
 
@@ -104,8 +98,6 @@ echo -e " Backend API: ${GREEN}http://localhost:8000${NC}"
 echo -e " API Docs: ${GREEN}http://localhost:8000/docs${NC}"
 echo -e "\n${YELLOW}Press Ctrl+C to stop all services${NC}"
 
-# Handle shutdown
 trap 'echo -e "\n${YELLOW}Stopping services...${NC}"; kill $BACKEND_PID $FRONTEND_PID 2>/dev/null; echo -e "${GREEN} Services stopped${NC}"; exit 0' INT TERM
 
-# Wait for processes
 wait

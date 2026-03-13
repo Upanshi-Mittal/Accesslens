@@ -1,6 +1,17 @@
+"""
+Core Configuration and Utilities Module
 
+This package contains the essential components for the AccessLens backend:
+- Configuration schemas and parsers (`config.py`)
+- Core application lifecycle and state classes.
+- Playwright-based browser pool managers (`browser_manager.py`).
+- Navigation and metric extraction controllers (`page_controller.py`).
+- Universal logic handlers like `audit_orchestrator.py` and `color_utils.py`.
+- Persistence adapters for the SQLite database (`report_storage.py`).
 
-
+These classes are typically stateless singletons or heavily managed to handle
+high-concurrency request workloads securely.
+"""
 from .config import settings
 from .browser_manager import browser_manager
 from .report_storage import report_storage

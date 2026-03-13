@@ -80,7 +80,7 @@ class StructuralEngine(BaseAccessibilityEngine):
                     tagName: el.tagName.toLowerCase(),
                     selector: getUniqueSelector(el),
                     index: index,
-                    isVisible: window.getComputedStyle(el).display !== 'none'
+                    isVisible: el.offsetWidth > 0 || el.offsetHeight > 0 || el.getClientRects().length > 0
                 });
             });
             return headings;
@@ -103,6 +103,9 @@ class StructuralEngine(BaseAccessibilityEngine):
             return []
 
     async def _extract_landmarks(self, page: Page, accessibility_tree: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """
+        Extracts ARIA landmark roles (main, nav, header, etc.) from the page structure.
+        """
         if accessibility_tree.get("structure", {}).get("landmarks"):
             landmarks_data = accessibility_tree["structure"]["landmarks"]
             if isinstance(landmarks_data, dict) and landmarks_data.get("landmarks"):
@@ -230,6 +233,10 @@ class StructuralEngine(BaseAccessibilityEngine):
         return None
 
     async def _analyze_document_outline(self, page: Page, headings: List[Dict], landmarks: List[Dict]) -> List[UnifiedIssue]:
+        """
+        Checks for logical document outline rules.
+        (e.g., ensuring a 'main' landmark actually contains heading elements).
+        """
         issues = []
         if not headings and not landmarks: return issues
         main_landmarks = [l for l in landmarks if l.get("role") == "main"]
@@ -247,6 +254,10 @@ class StructuralEngine(BaseAccessibilityEngine):
         return issues
 
     async def _analyze_semantic_structure(self, page: Page, accessibility_tree: Dict[str, Any]) -> List[UnifiedIssue]:
+        """
+        Verifies semantic HTML rules, such as identifying clickable `div` elements
+        that should semantically be `button` or `a` tags for keyboard accessibility.
+        """
         issues = []
         js_code = "() => { return document.querySelectorAll('div[onclick], div[onmousedown], div[onmouseup]').length; }"
         try:
@@ -258,6 +269,10 @@ class StructuralEngine(BaseAccessibilityEngine):
         return issues
 
     async def _analyze_navigation_structure(self, page: Page) -> List[UnifiedIssue]:
+        """
+        Analyzes navigation block completeness.
+        Specifically checks for bypass blocks like 'skip to main content' links.
+        """
         issues = []
         js_code = "() => { const links = Array.from(document.querySelectorAll('a')); return { hasSkipLink: links.some(l => l.textContent.toLowerCase().includes('skip') || l.href.includes('#main')) }; }"
         try:

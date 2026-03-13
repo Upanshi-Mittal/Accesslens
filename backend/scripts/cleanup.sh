@@ -146,6 +146,42 @@ show_menu() {
     esac
 }
 
+# Parse command line arguments for non-interactive mode
+if [ "$1" == "--all" ]; then
+    clean_reports 30 <<< "y"
+    clean_logs <<< "y"
+    clean_cache <<< "y"
+    clean_screenshots <<< "y"
+    exit 0
+elif [ "$1" == "--cache" ]; then
+    clean_cache <<< "y"
+    exit 0
+elif [ "$1" == "--reports" ]; then
+    clean_reports 30 <<< "y"
+    exit 0
+elif [ "$1" == "--db" ]; then
+    clean_reports 0 <<< "y"
+    exit 0
+fi
+
+# Parse CLI arguments for headless CI execution
+if [ "$1" == "--all" ]; then
+    clean_reports 30 <<< "y"
+    clean_logs <<< "y"
+    clean_cache <<< "y"
+    clean_screenshots <<< "y"
+    exit 0
+elif [ "$1" == "--cache" ]; then
+    clean_cache <<< "y"
+    exit 0
+elif [ "$1" == "--reports" ]; then
+    clean_reports 30 <<< "y"
+    exit 0
+elif [ "$1" == "--db" ]; then
+    clean_reports 0 <<< "y"
+    exit 0
+fi
+
 # Main loop
 while true; do
     show_menu

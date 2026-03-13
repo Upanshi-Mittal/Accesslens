@@ -14,6 +14,7 @@ from .page_controller import PageController
 from .accessibility_tree import AccessibilityTreeExtractor
 from .browser_manager import browser_manager
 from ..core.scoring import ConfidenceCalculator
+from .config import settings
 
 class AuditOrchestrator:
 
@@ -59,7 +60,7 @@ class AuditOrchestrator:
                 all_issues.extend(result)
 
 
-        if request.enable_ai:
+        if request.enable_ai and settings.enable_ai_engine:
             ai_issues = await self._run_ai_analysis(page_data, request)
             all_issues.extend(ai_issues)
 
@@ -74,7 +75,8 @@ class AuditOrchestrator:
             accessibility_tree=page_data.get("accessibility_tree"),
             metadata={
                 "duration_seconds": round(time.time() - start_time, 2),
-                "engines_run": request.engines
+                "engines_run": request.engines,
+                "full_screenshot": page_data.get("screenshot")
             }
         )
 
@@ -159,24 +161,31 @@ class AuditOrchestrator:
 
         if issues:
             severity_weights = {
-                IssueSeverity.CRITICAL: 10,
-                IssueSeverity.SERIOUS: 5,
-                IssueSeverity.MODERATE: 2,
-                IssueSeverity.MINOR: 1
+                IssueSeverity.CRITICAL: 25,
+                IssueSeverity.SERIOUS: 10,
+                IssueSeverity.MODERATE: 5,
+                IssueSeverity.MINOR: 2
             }
 
-            total_weight = sum(
-                severity_weights.get(issue.severity, 1)
+            total_deduction = sum(
+                severity_weights.get(issue.severity, 2)
                 for issue in issues
             )
-
-
-            max_possible = len(issues) * 10
-            score = max(0, 100 - (total_weight / max_possible * 100))
+            
+            score = max(0, 100 - total_deduction)
         else:
             score = 100
 
         avg_confidence = total_confidence / len(issues) if issues else 100
+
+        axe_issues = [i for i in issues if i.source == IssueSource.WCAG_DETERMINISTIC]
+        advanced_issues = [i for i in issues if i.source != IssueSource.WCAG_DETERMINISTIC]
+        
+        coverage_comparator = {
+            "axe_only_found": len(axe_issues),
+            "advanced_found": len(advanced_issues),
+            "axe_coverage_percent": round(len(axe_issues) / len(issues) * 100, 2) if issues else 100
+        }
 
         return AuditSummary(
             total_issues=len(issues),
@@ -184,7 +193,8 @@ class AuditOrchestrator:
             by_source=by_source,
             by_wcag_level=by_wcag_level,
             score=round(score, 2),
-            confidence_avg=round(avg_confidence, 2)
+            confidence_avg=round(avg_confidence, 2),
+            coverage_comparator=coverage_comparator
         )
 
     def _create_error_report(self, request: AuditRequest, error: str) -> AuditReport:

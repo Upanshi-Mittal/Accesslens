@@ -1,8 +1,11 @@
 
 from typing import Dict, Any, Optional
-from playwright.async_api import Page
+from playwright.async_api import Page, TimeoutError as PlaywrightTimeoutError
 import asyncio
 import logging
+import socket
+import ipaddress
+from urllib.parse import urlparse
 from .browser_manager import browser_manager
 from .accessibility_tree import AccessibilityTreeExtractor
 
@@ -85,23 +88,33 @@ class PageController:
         page.on("dialog", lambda dialog: dialog.dismiss())
 
     async def _navigate(self, page: Page, url: str, options: Dict[str, Any]):
-
+        # Navigation with retry logic
         timeout = options.get("timeout", 30000)
         wait_until = options.get("wait_until", "networkidle")
+        max_retries = 3
 
-        try:
-            response = await page.goto(
-                url,
-                wait_until=wait_until,
-                timeout=timeout
-            )
+        for attempt in range(max_retries):
+            try:
+                response = await page.goto(
+                    url,
+                    wait_until=wait_until,
+                    timeout=timeout
+                )
 
-            if response and not response.ok:
-                self._logger.warning(f"Page returned {response.status}: {response.status_text}")
-
-        except Exception as e:
-            self._logger.error(f"Navigation failed: {e}")
-            raise
+                if response and not response.ok:
+                    self._logger.warning(f"Page returned {response.status}: {response.status_text}")
+                
+                return # Success
+                
+            except PlaywrightTimeoutError as e:
+                if attempt == max_retries - 1:
+                    self._logger.error(f"Navigation failed after {max_retries} attempts: {e}")
+                    raise
+                self._logger.warning(f"Navigation timeout, retrying... (Attempt {attempt+1}/{max_retries})")
+                await asyncio.sleep(2 ** attempt)
+            except Exception as e:
+                self._logger.error(f"Navigation failed with unrecoverable error: {e}")
+                raise
 
     async def _wait_for_content(self, page: Page, options: Dict[str, Any]):
 

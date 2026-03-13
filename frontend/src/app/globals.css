@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: oklch(0.97 0.01 240);
+  --color-brand-100: oklch(0.93 0.03 240);
+  --color-brand-200: oklch(0.87 0.06 240);
+  --color-brand-300: oklch(0.79 0.1 240);
+  --color-brand-400: oklch(0.68 0.15 240);
+  --color-brand-500: oklch(0.58 0.19 240);
+  --color-brand-600: oklch(0.5 0.2 245);
+  --color-brand-700: oklch(0.42 0.18 245);
+  --color-brand-800: oklch(0.35 0.15 245);
+  --color-brand-900: oklch(0.28 0.12 245);
+  --color-brand-950: oklch(0.18 0.08 245);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-50 antialiased selection:bg-brand-500/30;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-6 lg:px-12;
+  }
+
+  .glass-card {
+    @apply bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl
+           hover:border-slate-700 transition-all duration-300 shadow-2xl;
+  }
+
+  .glass-input {
+    @apply bg-slate-900/80 backdrop-blur-md border border-slate-700 rounded-xl
+           focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50
+           transition-all duration-300 text-slate-100 placeholder:text-slate-500;
+  }
+
+  .btn-vibrant {
+    @apply relative overflow-hidden bg-brand-600 text-white font-bold py-3 px-8 rounded-xl
+           hover:bg-brand-500 active:scale-95 transition-all duration-200 
+           shadow-[0_0_20px_rgba(var(--brand-600),0.4)] hover:shadow-[0_0_30px_rgba(var(--brand-500),0.6)];
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-white via-slate-200 to-slate-400;
+  }
+}
+
+/* Custom animations */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; filter: blur(40px); }
+  50% { opacity: 0.8; filter: blur(60px); }
+}
+
+.glow-bg {
+  @apply absolute -z-10 rounded-full blur-[60px] animate-pulse;
+}
+
