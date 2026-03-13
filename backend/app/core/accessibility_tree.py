@@ -178,12 +178,9 @@ class AccessibilityTreeExtractor:
             client = await page.context.new_cdp_session(page)
             snapshot = await client.send("DOMSnapshot.captureSnapshot", {
                 "computedStyles": [
-                    "color",
-                    "backgroundColor",
-                    "fontSize",
-                    "fontWeight",
                     "display",
-                    "visibility"
+                    "visibility",
+                    "opacity"
                 ]
             })
             return snapshot

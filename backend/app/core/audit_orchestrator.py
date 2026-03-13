@@ -93,7 +93,7 @@ class AuditOrchestrator:
                 {
                     "viewport": request.viewport,
                     "wait_for_network_idle": request.wait_for_network_idle,
-                    "timeout": 30000
+                    "timeout": settings.browser_timeout
                 }
             )
 
@@ -104,8 +104,10 @@ class AuditOrchestrator:
             return page_data
 
         except Exception as e:
-            self._logger.error(f"Page setup failed: {e}")
-            return {"error": str(e)}
+            self._logger.error(f"Page setup failed for {request.url}: {e}")
+            if "different event loop" in str(e):
+                self._logger.warning("Event loop mismatch detected, browser_manager lock will be re-initialized on next call.")
+            return {"error": f"Failed to load page: {str(e)}"}
         finally:
 
             pass
@@ -203,11 +205,12 @@ class AuditOrchestrator:
             request=request,
             summary=AuditSummary(
                 total_issues=0,
-                by_severity={},
-                by_source={},
-                by_wcag_level={},
+                by_severity={s: 0 for s in IssueSeverity},
+                by_source={s: 0 for s in IssueSource},
+                by_wcag_level={"A": 0, "AA": 0, "AAA": 0},
                 score=0,
-                confidence_avg=0
+                confidence_avg=0,
+                error=error
             ),
             issues=[],
             metadata={"error": error}

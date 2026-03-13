@@ -51,11 +51,20 @@ async def lifespan(app: FastAPI):
     app.state.engine_registry = EngineRegistry()
 
     # Register engines
-    app.state.engine_registry.register(WCAGEngine())
-    app.state.engine_registry.register(ContrastEngine())
-    app.state.engine_registry.register(StructuralEngine())
+    wcag = WCAGEngine()
+    contrast = ContrastEngine()
+    structural = StructuralEngine()
+    
+    app.state.engine_registry.register(wcag)
+    app.state.engine_registry.register(contrast)
+    app.state.engine_registry.register(structural)
+    
+    # Register aliases to prevent "Engine not found" warnings
+    app.state.engine_registry._engines["wcag"] = wcag
+    app.state.engine_registry._engines["contrast"] = contrast
+    app.state.engine_registry._engines["structural"] = structural
 
-    logger.info(f"Registered {len(app.state.engine_registry.get_all())} engines")
+    logger.info(f"Registered {len(app.state.engine_registry.get_all())} engines (with aliases)")
 
     yield
 
@@ -96,7 +105,13 @@ async def add_security_headers(request: Request, call_next):
     response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
-    response.headers["Content-Security-Policy"] = "default-src 'self'"
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline' cdn.jsdelivr.net; "
+        "style-src 'self' 'unsafe-inline' cdn.jsdelivr.net; "
+        "img-src 'self' data: fastapi.tiangolo.com; "
+        "connect-src 'self' cdn.jsdelivr.net;"
+    )
     response.headers["X-XSS-Protection"] = "1; mode=block"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"

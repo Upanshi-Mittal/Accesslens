@@ -10,17 +10,17 @@ class Settings(BaseSettings):
     api_port: int = Field(8000, alias="API_PORT")
     debug: bool = Field(False, alias="DEBUG")
     testing: bool = Field(False, alias="TESTING")
-    rate_limit_per_minute: int = Field(100, alias="RATE_LIMIT_PER_MINUTE")
+    rate_limit_per_minute: int = Field(300, alias="RATE_LIMIT_PER_MINUTE") # Increased for development
 
     # Browser Settings
     browser_headless: bool = Field(True, alias="BROWSER_HEADLESS")
-    browser_max_pages: int = Field(5, alias="BROWSER_MAX_PAGES")
-    browser_timeout: int = Field(30000, alias="BROWSER_TIMEOUT")
+    browser_max_pages: int = Field(10, alias="BROWSER_MAX_PAGES") # Increased
+    browser_timeout: int = Field(60000, alias="BROWSER_TIMEOUT") # Increased from 30s
 
     # Audit Settings
     default_viewport_width: int = Field(1280, alias="VIEWPORT_WIDTH")
     default_viewport_height: int = Field(720, alias="VIEWPORT_HEIGHT")
-    max_audit_duration: int = Field(300, alias="MAX_AUDIT_DURATION")
+    max_audit_duration: int = Field(600, alias="MAX_AUDIT_DURATION") # Increased
 
     # Engine Settings
     enabled_engines: List[str] = Field(
@@ -101,7 +101,7 @@ class Settings(BaseSettings):
     max_focusable_elements: int = Field(10, alias="MAX_FOCUSABLE_ELEMENTS")
 
     # Database
-    database_url: str = Field("postgresql://accesslens:accesslens@localhost:5432/accesslens", alias="DATABASE_URL")
+    database_url: str = Field("sqlite:///accesslens.db", alias="DATABASE_URL")
 
     # Redis
     redis_url: Optional[str] = Field("redis://localhost:6379/0", alias="REDIS_URL")

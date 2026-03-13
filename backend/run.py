@@ -60,13 +60,13 @@ def main():
         print("✅ Setup complete!")
         return 0
     
-    # Print banner
-    print("""
-    ╔══════════════════════════════════════════════════════════╗
-    ║                     AccessLens v1.0.0                    ║
-    ║           Layered Accessibility Auditing Framework        ║
-    ╚══════════════════════════════════════════════════════════╝
-    """)
+    # Print banner (commented out due to potential encoding issues in Windows)
+    # print("""
+    # ╔══════════════════════════════════════════════════════════╗
+    # ║                     AccessLens v1.0.0                    ║
+    # ║           Layered Accessibility Auditing Framework        ║
+    # ╚══════════════════════════════════════════════════════════╝
+    # """)
     
     print(f"🚀 Starting server at http://{args.host}:{args.port}")
     print(f"📚 API Documentation: http://{args.host}:{args.port}/docs")

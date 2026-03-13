@@ -89,8 +89,8 @@ class PageController:
 
     async def _navigate(self, page: Page, url: str, options: Dict[str, Any]):
         # Navigation with retry logic
-        timeout = options.get("timeout", 30000)
-        wait_until = options.get("wait_until", "networkidle")
+        timeout = options.get("timeout", 60000)
+        wait_until = options.get("wait_until", "load")
         max_retries = 3
 
         for attempt in range(max_retries):
@@ -128,7 +128,7 @@ class PageController:
 
 
         if options.get("wait_for_network_idle", True):
-            await page.wait_for_load_state("networkidle")
+            await page.wait_for_load_state("networkidle", timeout=options.get("timeout", 60000))
 
 
         await asyncio.sleep(1)
@@ -150,14 +150,18 @@ class PageController:
     async def _get_page_metrics(self, page: Page) -> Dict[str, Any]:
 
         try:
-            metrics = await page.metrics()
-
-
+            # page.metrics() is not a Playwright method, use CDP instead
+            client = await page.context.new_cdp_session(page)
+            cdp_metrics = await client.send("Performance.getMetrics")
+            
+            # Convert list of {name, value} to dict
+            metrics_dict = {m["name"]: m["value"] for m in cdp_metrics.get("metrics", [])}
+            
             perf = await page.evaluate("() => window.performance.getEntriesByType('navigation')[0]?.toJSON() || {}")
 
             return {
                 "timestamp": self._tree_extractor._get_timestamp(),
-                "metrics": metrics,
+                "metrics": metrics_dict,
                 "navigation_timing": perf
             }
         except Exception as e:

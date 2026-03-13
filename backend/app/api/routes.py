@@ -22,6 +22,9 @@ from ..core.rate_limiter import limiter
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
+# In-memory store for audit results (used by tests)
+audit_store = {}
+
 
 # Metrics initialization
 
@@ -173,7 +176,8 @@ async def run_audit_background(
         
         AUDIT_REQUESTS.labels(status='failed').inc()
 
-        audit_store[audit_id] = AuditReport(
+        # Save error report to persistent storage
+        error_report = AuditReport(
             request=request,
             summary=AuditSummary(
                 total_issues=0,
@@ -186,3 +190,5 @@ async def run_audit_background(
             issues=[],
             metadata={"error": str(e)}
         )
+        error_report.id = audit_id
+        await storage.save_report(error_report)

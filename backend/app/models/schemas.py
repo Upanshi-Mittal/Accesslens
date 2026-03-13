@@ -129,6 +129,7 @@ class AuditSummary(BaseModel):
     by_wcag_level: Dict[str, int]
     score: float
     confidence_avg: float
+    error: Optional[str] = None
     coverage_comparator: Dict[str, Any] = Field(default_factory=dict)
 
 class AuditReport(BaseModel):

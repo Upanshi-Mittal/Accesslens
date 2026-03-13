@@ -45,12 +45,14 @@ class WCAGEngine(BaseAccessibilityEngine):
         try:
             # Add timeout protection specifically for axe injection/run
             try:
-                results = await asyncio.wait_for(self.axe.run(page), timeout=30.0)
+                # Use a larger timeout and ensure the page is actually ready
+                results = await asyncio.wait_for(self.axe.run(page), timeout=60.0)
             except asyncio.TimeoutError:
-                logger.error("Axe-core execution timed out.")
+                logger.error(f"Axe-core execution timed out on {page.url}")
                 return []
             except Exception as inner_e:
-                logger.error(f"Axe-core injection or execution failed: {inner_e}")
+                logger.error(f"Axe-core injection or execution failed on {page.url}: {inner_e}")
+                # Potentially retry or check if it's a CDP connection issue
                 return []
 
             issues = []

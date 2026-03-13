@@ -28,8 +28,14 @@ class BrowserManager:
         self._initialized = True
         self._logger = logging.getLogger(__name__)
         self._active_pages = 0
-        self._max_concurrent_pages = 5
-        self._lock = asyncio.Lock()
+        from .config import settings
+        self._max_concurrent_pages = settings.browser_max_pages
+        self._lock = None
+
+    def _get_lock(self):
+        if self._lock is None:
+            self._lock = asyncio.Lock()
+        return self._lock
 
     async def initialize(self, headless: bool = True):
 
@@ -46,7 +52,8 @@ class BrowserManager:
                     '--disable-setuid-sandbox',
                     '--disable-web-security',
                     '--disable-features=IsolateOrigins,site-per-process',
-                    '--disable-gpu'
+                    '--disable-gpu',
+                    '--disable-blink-features=AutomationControlled'
                 ]
             )
 
@@ -64,7 +71,7 @@ class BrowserManager:
     async def get_page(self, timeout: float = 30.0) -> Page:
         start_time = time.time()
         while True:
-            async with self._lock:
+            async with self._get_lock():
                 can_allocate = self._active_pages < self._max_concurrent_pages
                 if can_allocate:
                     self._active_pages += 1
@@ -82,13 +89,14 @@ class BrowserManager:
         page = await self._context.new_page()
 
 
-        page.set_default_timeout(30000)
+        from .config import settings
+        page.set_default_timeout(settings.browser_timeout)
 
         return page
 
     async def release_page(self, page: Page):
 
-        async with self._lock:
+        async with self._get_lock():
             try:
                 if not page.is_closed():
                     await page.close()

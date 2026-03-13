@@ -34,12 +34,21 @@ class CacheManager:
             if reinit:
                 try:
                     import redis.asyncio as aioredis
+                    import asyncio
+                    
                     if self._redis:
-                        await self._redis.aclose()
+                        try:
+                            await self._redis.aclose()
+                        except Exception:
+                            pass
+                    
                     self._redis = aioredis.from_url(settings.redis_url, decode_responses=True)
+                    # Test connection immediately
+                    await self._redis.ping()
                     logger.info("Redis cache initialized")
                 except Exception as e:
-                    logger.warning(f"Failed to initialize Redis, falling back to in-memory: {e}")
+                    logger.warning(f"Failed to initialize Redis: {e}")
+                    self._redis = None # Ensure it's None if init fails
         
         self._initialized = True
 

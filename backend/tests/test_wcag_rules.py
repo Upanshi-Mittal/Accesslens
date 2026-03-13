@@ -53,8 +53,12 @@ async def test_wcag_violation_conversion():
     }
     mock_violation.nodes = [mock_node]
     
+    # Create mock page
+    mock_page = AsyncMock()
+    mock_page.query_selector = AsyncMock(return_value=None)
+    
     # Convert violation to issue
-    issue = await engine._convert_violation(mock_violation)
+    issue = await engine._convert_violation(mock_violation, mock_node, mock_page)
     
     # Assertions
     assert issue is not None
