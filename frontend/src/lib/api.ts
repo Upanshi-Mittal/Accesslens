@@ -25,7 +25,6 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-// Response interceptor for error handling
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -53,9 +52,7 @@ apiClient.interceptors.response.use(
 );
 
 export const auditService = {
-  // Health check - root endpoint
   health: async () => {
-    // Health is usually at root /health, not /api/v1/health
     const response = await axios.get(`${API_BASE_URL.replace('/api/v1', '')}/health`);
     return response.data;
   },
