@@ -1,0 +1,119 @@
+# backend/docker-compose.yml
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: accesslens-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - DEBUG=false
+      - BROWSER_HEADLESS=true
+      - BROWSER_MAX_PAGES=5
+      - BROWSER_TIMEOUT=30000
+      - VIEWPORT_WIDTH=1280
+      - VIEWPORT_HEIGHT=720
+      - MAX_AUDIT_DURATION=300
+      - ENABLED_ENGINES=wcag_deterministic,contrast_engine,structural_engine,ai_engine
+      - LLAVA_MODEL_PATH=/app/models/llava
+      - MISTRAL_MODEL_PATH=/app/models/mistral-7b
+      - AI_USE_LOCAL=true
+      - AI_CONFIDENCE_THRESHOLD=0.7
+      - DATABASE_URL=postgresql://accesslens:accesslens@postgres:5432/accesslens
+      - REDIS_URL=redis://redis:6379/0
+      - STORAGE_PATH=/app/data
+      - LOG_LEVEL=INFO
+      - LOG_FILE=/app/logs/accesslens.log
+      - JSON_LOGS=true
+      - CORS_ORIGINS=http://localhost:3000
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./models:/app/models
+      - ./app:/app/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - accesslens-network
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: accesslens-postgres
+    environment:
+      - POSTGRES_USER=accesslens
+      - POSTGRES_PASSWORD=accesslens
+      - POSTGRES_DB=accesslens
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ../migrations:/docker-entrypoint-initdb.d
+    networks:
+      - accesslens-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U accesslens"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: accesslens-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - accesslens-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: accesslens-pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@accesslens.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - accesslens-network
+    restart: unless-stopped
+    depends_on:
+      - postgres
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: accesslens-redis-commander
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    networks:
+      - accesslens-network
+    restart: unless-stopped
+    depends_on:
+      - redis
+
+volumes:
+  postgres-data:
+  redis-data:
+  pgadmin-data:
+
+networks:
+  accesslens-network:
+    driver: bridge
