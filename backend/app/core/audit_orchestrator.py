@@ -39,8 +39,12 @@ class AuditOrchestrator:
             if "error" in page_data:
                 return self._create_error_report(request, page_data["error"])
 
+            engines_to_run = list(request.engines)
+            if request.enable_ai and settings.enable_ai_engine and "ai_engine" not in engines_to_run and "ai" not in engines_to_run:
+                engines_to_run.append("ai_engine")
+
             engine_tasks = []
-            for engine_name in request.engines:
+            for engine_name in engines_to_run:
                 engine = self.engine_registry.get(engine_name)
                 if engine:
                     engine_tasks.append(
@@ -59,11 +63,6 @@ class AuditOrchestrator:
                     self._logger.error(f"Engine failed: {result}")
                 elif isinstance(result, list):
                     all_issues.extend(result)
-
-
-            if request.enable_ai and settings.enable_ai_engine:
-                ai_issues = await self._run_ai_analysis(page_data, request)
-                all_issues.extend(ai_issues)
 
 
             summary = self._generate_summary(all_issues, start_time)
@@ -132,28 +131,7 @@ class AuditOrchestrator:
             self._logger.error(f"Engine {engine.name} failed: {e}", exc_info=True)
             return []
 
-    async def _run_ai_analysis(
-        self,
-        page_data: Dict[str, Any],
-        request: AuditRequest
-    ) -> List[UnifiedIssue]:
-        """Call AIService for vision + fix generation. Silently skips if models aren't available."""
-        try:
-            from ..ai.ai_service import AIService, AIConfig
-            ai_service = AIService(AIConfig(
-                llava_endpoint=settings.llava_endpoint,
-                mistral_endpoint=settings.mistral_endpoint,
-                use_local=settings.ai_use_local,
-                confidence_threshold=settings.ai_confidence_threshold
-            ))
-            return await ai_service.analyze(
-                screenshot=page_data.get("screenshot", ""),
-                dom_snapshot=page_data.get("accessibility_tree", {}),
-                existing_issues=[]
-            )
-        except Exception as e:
-            self._logger.debug(f"AI analysis skipped (models likely not running): {e}")
-            return []
+
 
     def _generate_summary(
         self,

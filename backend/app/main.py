@@ -82,6 +82,7 @@ from .engines.contrast_engine import ContrastEngine
 from .engines.heuristic_engine import HeuristicEngine
 from .engines.navigation_engine import NavigationEngine
 from .engines.form_engine import FormEngine
+from .engines.ai_engine import AIEngine
 
 app.state.engine_registry.register(WCAGEngine())
 app.state.engine_registry.register(StructuralEngine())
@@ -89,6 +90,7 @@ app.state.engine_registry.register(ContrastEngine())
 app.state.engine_registry.register(HeuristicEngine())
 app.state.engine_registry.register(NavigationEngine())
 app.state.engine_registry.register(FormEngine())
+app.state.engine_registry.register(AIEngine())
 
 # Aliases
 app.state.engine_registry._engines["wcag"] = app.state.engine_registry.get("wcag_deterministic")
@@ -97,6 +99,7 @@ app.state.engine_registry._engines["contrast"] = app.state.engine_registry.get("
 app.state.engine_registry._engines["heuristic"] = app.state.engine_registry.get("heuristic")
 app.state.engine_registry._engines["navigation"] = app.state.engine_registry.get("navigation")
 app.state.engine_registry._engines["form"] = app.state.engine_registry.get("form_engine")
+app.state.engine_registry._engines["ai"] = app.state.engine_registry.get("ai_engine")
 
 # Add rate limiting middleware FIRST (before CORS and other middleware)
 app.add_middleware(RateLimitMiddleware)
