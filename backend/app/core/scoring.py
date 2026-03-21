@@ -61,55 +61,6 @@ class ConfidenceCalculator:
         else:
             return ConfidenceLevel.LOW
 
-class ImpactScorer:
-    """
-    Calculates a qualitative accessibility score based on the severity and type of issues.
-    Prioritizes CRITICAL barriers (P0) over minor aesthetic issues.
-    """
-    
-    SEVERITY_WEIGHTS = {
-        IssueSeverity.CRITICAL: 25.0,  # 4 Criticals = 0 score
-        IssueSeverity.SERIOUS:  10.0,
-        IssueSeverity.MODERATE:  2.0,
-        IssueSeverity.MINOR:     0.5
-    }
-
-    @classmethod
-    def calculate_score(cls, issues: List[UnifiedIssue]) -> float:
-        """
-        Uses a non-linear deduction model. 
-        Deducts per unique issue type/pattern to avoid score=0 on large pages with many twins.
-        """
-        if not issues:
-            return 100.0
-
-        total_deduction = 0.0
-        seen_patterns = set()
-
-        # Sort issues so more severe ones are processed first for deduplication logic if needed
-        sorted_issues = sorted(issues, key=lambda i: cls.SEVERITY_WEIGHTS.get(i.severity, 0), reverse=True)
-
-        for issue in sorted_issues:
-            # Create a pattern key based on issue type and a simplified selector or title
-            # This allows grouping 400 identical contrast issues into 1 'pattern' for scoring.
-            pattern_key = f"{issue.issue_type}:{issue.title[:30]}"
-            
-            weight = cls.SEVERITY_WEIGHTS.get(issue.severity, 0.5)
-            
-            if pattern_key not in seen_patterns:
-                # First time seeing this pattern = Full deduction
-                total_deduction += weight
-                seen_patterns.add(pattern_key)
-            else:
-                # Repeated pattern = Diminishing deduction (prevents score from being killed by repetitive bugs)
-                total_deduction += (weight * 0.05) # Only 5% additional penalty for duplicates
-
-        # Final score calculation with a floor of 0
-        # A score of 0 should represent a truly unusable experience (multiple Criticals)
-        final_score = max(0, 100 - total_deduction)
-        
-        return round(final_score, 2)
-
 class SeverityMapper:
 
 
