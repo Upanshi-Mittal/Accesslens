@@ -128,7 +128,7 @@ For deep-dive documentation on specific system components, visit the [Documentat
 ---
 ##  Live Demo
 
-- Frontend: https://accesslens-azure.vercel.app/
+- Live App: https://accesslens-azure.vercel.app/
 - Backend API: https://sansritimishra-accesslens-backend.hf.space/
 ---
 ## Quick Start
