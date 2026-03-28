@@ -1,7 +1,5 @@
 # AccessLens
 
-### One click. Find accessibility issues other tools miss. Get the code to fix them.
-
 *Bridges the gap between valid code and usable design by detecting real-world accessibility issues and generating fixes.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
@@ -223,7 +221,7 @@ graph TB
 | **AI Models** | LLaVA + Mistral 7B |
 | **Average Response Time** | ~232 ms |
 | **Development Duration** | 23 days |
-| **Total Commits** | 40 |
+| **Total Commits** | 41 |
 | **Lines of Code** | ~33,500 (excluding lockfiles) |
 
 ---
